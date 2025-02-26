@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - NPC
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Camera
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Floor
+    uniqueID: 1427093533
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: WallForeGround
+    uniqueID: 476727519
+    locked: 0
+  - name: UI
+    uniqueID: 2135220937
+    locked: 0
