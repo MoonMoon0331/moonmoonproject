@@ -36,6 +36,7 @@ public class InputManager : MonoBehaviour
     // 切換到 Player 操作
     public void EnablePlayerInput()
     {
+        Debug.Log("Enable Player Input");
         inputActions.UI.Disable();
         inputActions.Player.Enable();
         
@@ -45,6 +46,7 @@ public class InputManager : MonoBehaviour
 
     public void EnableUIInput()
     {
+        Debug.Log("Enable UI Input");
         inputActions.Player.Disable();
         inputActions.UI.Enable();
     }

@@ -61,9 +61,6 @@ public class BattleManager : MonoBehaviour
     public void Start()
     {
         StopBattle();
-        // StartBattle();  
-
-        story = new Story(inkAsset.text);
     }
 
     public void Update()
@@ -76,6 +73,7 @@ public class BattleManager : MonoBehaviour
         
         if(isTimerRunning)
         {
+            Debug.Log(timerDuration);
             timerDuration += Time.deltaTime;
             if(timerDuration >= timerLimit)
             {
@@ -93,12 +91,14 @@ public class BattleManager : MonoBehaviour
 
     public void StartBattle()
     {
+        InputManager.Instance.EnableUIInput();
         
         battleUI.SetActive(true);
         if(story != null) return;
+
         story = new Story(inkAsset.text);
         currentState = BattleState.InProgress;
-        InputManager.Instance.EnableUIInput();
+        
 
         ContinueBattle();
     }

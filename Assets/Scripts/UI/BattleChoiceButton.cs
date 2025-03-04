@@ -12,6 +12,15 @@ public class BattleChoiceButton : MonoBehaviour
     {
         Transform choice = transform.parent;
         Transform arrowTransform = choice.Find("Arrow");
+
+        if (arrowTransform != null)
+        {
+            arrow = arrowTransform.gameObject;
+        }
+        else
+        {
+            Debug.LogError("找不到 arrow，請確認層級結構和名稱！");
+        }
         choiceText = GetComponentInChildren<TMP_Text>();
     }
 
