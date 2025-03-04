@@ -73,12 +73,11 @@ public class BattleManager : MonoBehaviour
         
         if(isTimerRunning)
         {
-            Debug.Log(timerDuration);
             timerDuration += Time.deltaTime;
             if(timerDuration >= timerLimit)
             {
-                StopTimer();
                 HandleTimeOut();
+                StopTimer();
             }
         }
     }
@@ -99,7 +98,6 @@ public class BattleManager : MonoBehaviour
         story = new Story(inkAsset.text);
         currentState = BattleState.InProgress;
         
-
         ContinueBattle();
     }
 
@@ -114,9 +112,10 @@ public class BattleManager : MonoBehaviour
         }
         if(story.currentChoices.Count > 0)
         {
-            if(story.variablesState["timer"] != null)
+            if(story.variablesState["timeLimit"] != null)
             {
-                timerLimit = (float)story.variablesState["timer"];
+                if(story.variablesState["timeLimit"] is int limit)
+                {timerLimit = (float)limit;}
                 if(timerLimit > 0){StartTimer(timerLimit);}
             }
             currentState = BattleState.Choosing;
@@ -154,9 +153,9 @@ public class BattleManager : MonoBehaviour
 
     public void StopTimer()
     {
+        timer.SetActive(false);
         timerDuration = 0f;
         isTimerRunning = false;
-        timer.SetActive(false);
     }
 
     private void HandleTimeOut()
@@ -176,6 +175,7 @@ public class BattleManager : MonoBehaviour
     {
         for(int i = 0; i < buttons.Length; i++)
         {
+            Debug.Log(story.currentChoices.Count);
             if(i < story.currentChoices.Count)
             {
                 buttons[i].gameObject.SetActive(true);
@@ -229,11 +229,11 @@ public class BattleManager : MonoBehaviour
         {
             if(i == currentChoiceIndex)
             {
-                buttons[i].GetComponent<BattleChoiceButton>().OnSelected();
+                buttons[i].GetComponentInChildren<BattleChoiceButton>().OnSelected();
             }
             else
             {
-                buttons[i].GetComponent<BattleChoiceButton>().OffSelected();
+                buttons[i].GetComponentInChildren<BattleChoiceButton>().OffSelected();
             }
         }
     }

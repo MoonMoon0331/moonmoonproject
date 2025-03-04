@@ -4155,7 +4155,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.28, y: 0.51, z: -10}
+  m_LocalPosition: {x: 7.519897, y: -7.9631996, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6674,7 +6674,7 @@ Transform:
   m_GameObject: {fileID: 953408474}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.9342307, y: 0.032193363, z: -10.067024}
+  m_LocalPosition: {x: 8.865769, y: -8.507807, z: -10.067024}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11812,7 +11812,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleUI: {fileID: 1374306949}
   buttons:
-  - {fileID: 7812011408158781644}
+  - {fileID: 1671336973}
   dialogueBox: {fileID: 1279386461}
   dialogueTmpText: {fileID: 1831198306}
   timer: {fileID: 1406860602}
@@ -47991,6 +47991,11 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0000000016129285, y: 0.26353028}
   m_Size: {x: 0.7500001, y: 0.5270608}
   m_Direction: 1
+--- !u!1 &1671336973 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1633449540572473926, guid: ffa30d0f1619e984fae18f5c0511e6e0, type: 3}
+  m_PrefabInstance: {fileID: 1626427968360467878}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1729577720
 GameObject:
   m_ObjectHideFlags: 0
@@ -49893,7 +49898,7 @@ Transform:
   m_GameObject: {fileID: 1925868681}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.28, y: 0.51, z: 0}
+  m_LocalPosition: {x: 7.52, y: -8.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -50859,34 +50864,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BattleChoice
       objectReference: {fileID: 0}
-    - target: {fileID: 3869592146644642300, guid: ffa30d0f1619e984fae18f5c0511e6e0, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3869592146644642300, guid: ffa30d0f1619e984fae18f5c0511e6e0, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3869592146644642300, guid: ffa30d0f1619e984fae18f5c0511e6e0, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3869592146644642300, guid: ffa30d0f1619e984fae18f5c0511e6e0, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3869592146644642300, guid: ffa30d0f1619e984fae18f5c0511e6e0, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3869592146644642300, guid: ffa30d0f1619e984fae18f5c0511e6e0, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5150851420411871816, guid: ffa30d0f1619e984fae18f5c0511e6e0, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8003303461346221473, guid: ffa30d0f1619e984fae18f5c0511e6e0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -51521,11 +51498,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &7812011408158781644 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 917439928812353482, guid: ffa30d0f1619e984fae18f5c0511e6e0, type: 3}
-  m_PrefabInstance: {fileID: 1626427968360467878}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
