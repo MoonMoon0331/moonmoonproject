@@ -24,7 +24,7 @@ public class BattleManager : MonoBehaviour
     public Image timerBar;
     private bool isTimerRunning = false;
     private float timerDuration = 0f;
-    private float timerLimit = 0f;
+    private float timeLimit = 0f;
 
     
     [Header("角色資訊")]
@@ -70,12 +70,14 @@ public class BattleManager : MonoBehaviour
 
         else if (currentState == BattleState.Choosing)
         {HandleChoiceSelection();}
-        
+
         if(isTimerRunning)
         {
             timerDuration += Time.deltaTime;
-            if(timerDuration >= timerLimit)
+            if(timerDuration >= timeLimit)
             {
+                
+                Debug.Log("timerDuration: " + timerDuration + " timeLimit: " + timeLimit);
                 HandleTimeOut();
                 StopTimer();
             }
@@ -112,11 +114,17 @@ public class BattleManager : MonoBehaviour
         }
         if(story.currentChoices.Count > 0)
         {
+            
             if(story.variablesState["timeLimit"] != null)
             {
                 if(story.variablesState["timeLimit"] is int limit)
-                {timerLimit = (float)limit;}
-                if(timerLimit > 0){StartTimer(timerLimit);}
+                {timeLimit = (float)limit;}
+                else if(story.variablesState["timeLimit"] is float limitFloat)
+                {timeLimit = limitFloat;}
+                else if(story.variablesState["timeLimit"] is double limitDouble)
+                {timeLimit = (float)limitDouble;}
+                Debug.Log(timeLimit);
+                if(timeLimit > 0){StartTimer(timeLimit);}
             }
             currentState = BattleState.Choosing;
             currentChoiceIndex = 0;
@@ -145,7 +153,7 @@ public class BattleManager : MonoBehaviour
 
     public void StartTimer(float limit)
     {
-        timerLimit = limit;
+        timeLimit = limit;
         timerDuration = 0f;
         isTimerRunning = true;
         timer.SetActive(true);
@@ -165,9 +173,8 @@ public class BattleManager : MonoBehaviour
             buttons[i].gameObject.SetActive(false);
         }
         
-
-        // 這裡是選擇最後一個選項，也就是時間到的選項
         currentState = BattleState.InProgress;
+        story.ChoosePathString("Opening2");
         ContinueBattle();
     }
 
@@ -175,7 +182,6 @@ public class BattleManager : MonoBehaviour
     {
         for(int i = 0; i < buttons.Length; i++)
         {
-            Debug.Log(story.currentChoices.Count);
             if(i < story.currentChoices.Count)
             {
                 buttons[i].gameObject.SetActive(true);
