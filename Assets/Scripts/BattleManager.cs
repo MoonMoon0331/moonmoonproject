@@ -174,7 +174,7 @@ public class BattleManager : MonoBehaviour
         }
         
         currentState = BattleState.InProgress;
-        story.ChoosePathString("Opening2");
+        story.ChoosePathString(story.variablesState["chapterName"].ToString());
         ContinueBattle();
     }
 

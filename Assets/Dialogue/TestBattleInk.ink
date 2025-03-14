@@ -1,4 +1,5 @@
 VAR timeLimit = 0.0
+VAR chapterName = "Opening1"
 
 ->Day1
 
@@ -7,6 +8,8 @@ VAR timeLimit = 0.0
 
 ===Opening1===
 ~timeLimit = 1
+~chapterName = "Opening2"
+
 你好?
 +給老子把錢拿來
     ->Intimidation
