@@ -74,9 +74,16 @@ public class BattleManager : MonoBehaviour
 
         if(isTimerRunning)
         {
-            timerDuration += Time.deltaTime;Debug.Log((int)timerDuration);
+            timerDuration += Time.deltaTime;
+
+            // 使用方法二：修改 localScale (記得確保 timerBar 的 pivot 設定在 (0.5, 0.5))
+            float remainingTime = timeLimit - timerDuration;
+            float t = Mathf.Clamp01(remainingTime / timeLimit);
+            timerBar.rectTransform.localScale = new Vector3(t, 1, 1);
+
             if(timerDuration >= timeLimit)
             {
+                timerBar.rectTransform.localScale = new Vector3(t, 1, 1);
                 StopTimer();
                 HandleTimeOut();
                 ContinueBattle();
