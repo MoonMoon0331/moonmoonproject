@@ -1,5 +1,6 @@
 VAR timeLimit = 0.0
 VAR chapterName = "Opening1"
+VAR itCanChoosing = false
 
 ->Day1
 
@@ -7,14 +8,12 @@ VAR chapterName = "Opening1"
 ->Opening1
 
 ===Opening1===
+你好?
+
 ~timeLimit = 1
 ~chapterName = "Opening2"
-
-你好?
 +給老子把錢拿來
     ->Intimidation
-
-->Opening2
 
 =Intimidation
 你是誰? 
@@ -23,9 +22,10 @@ VAR chapterName = "Opening1"
 ->CallEnd
 
 ===Opening2===
+~itCanChoosing = true
+你好
+~chapterName = "CallEnd"
 ~timeLimit = 5.0
-
-你好?
 +你好，這裡是警政署連線系統
     ->policeFraud
 +你好，請問您是___小姐嗎?

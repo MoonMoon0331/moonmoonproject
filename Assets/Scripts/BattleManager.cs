@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Ink.Runtime;
+using System.Threading;
 // using Microsoft.Unity.VisualStudio.Editor;
 
 public class BattleManager : MonoBehaviour
@@ -73,13 +74,15 @@ public class BattleManager : MonoBehaviour
 
         if(isTimerRunning)
         {
-            timerDuration += Time.deltaTime;
+            timerDuration += Time.deltaTime;Debug.Log((int)timerDuration);
             if(timerDuration >= timeLimit)
             {
-                
-                Debug.Log("timerDuration: " + timerDuration + " timeLimit: " + timeLimit);
-                HandleTimeOut();
                 StopTimer();
+                HandleTimeOut();
+                ContinueBattle();
+                if(story.variablesState["itCanChoosing"] is bool itCanChoosing)
+                {if(itCanChoosing){ContinueBattle();}}
+                
             }
         }
     }
@@ -123,15 +126,20 @@ public class BattleManager : MonoBehaviour
                 {timeLimit = limitFloat;}
                 else if(story.variablesState["timeLimit"] is double limitDouble)
                 {timeLimit = (float)limitDouble;}
-                Debug.Log(timeLimit);
                 if(timeLimit > 0){StartTimer(timeLimit);}
             }
             currentState = BattleState.Choosing;
             currentChoiceIndex = 0;
+
             UpdateChoiceButtons();
         }
         if(story.canContinue)
         {
+            //重置選項及計時器
+            for(int i = 0; i < buttons.Length; i++)
+            {buttons[i].gameObject.SetActive(false);}
+            timer.SetActive(false);
+
             dialogueTmpText.text = story.Continue();
             currentState = BattleState.InProgress;
 
@@ -161,21 +169,19 @@ public class BattleManager : MonoBehaviour
 
     public void StopTimer()
     {
-        timer.SetActive(false);
         timerDuration = 0f;
         isTimerRunning = false;
+        
     }
 
     private void HandleTimeOut()
     {
         for(int i = 0; i < buttons.Length; i++)
-        {
-            buttons[i].gameObject.SetActive(false);
-        }
+        {buttons[i].gameObject.SetActive(false);}
         
         currentState = BattleState.InProgress;
         story.ChoosePathString(story.variablesState["chapterName"].ToString());
-        ContinueBattle();
+        timer.SetActive(false);
     }
 
     private void UpdateChoiceButtons()
@@ -188,14 +194,11 @@ public class BattleManager : MonoBehaviour
                 buttons[i].GetComponentInChildren<BattleChoiceButton>().UpdateButtonText(story.currentChoices[i].text);
             }
             else
-            {
-                buttons[i].gameObject.SetActive(false);
-            }
+            {buttons[i].gameObject.SetActive(false);}
         }
 
         currentChoiceIndex = 0;
         HighlightCurrentChoice();
-        currentState = BattleState.Choosing;
     }
 
     private void HandleChoiceSelection()
@@ -220,6 +223,7 @@ public class BattleManager : MonoBehaviour
     {
         story.ChooseChoiceIndex(index);
         currentState = BattleState.InProgress;
+        StopTimer();
         ContinueBattle();
     }
 
@@ -234,13 +238,9 @@ public class BattleManager : MonoBehaviour
         for(int i = 0; i < buttons.Length; i++)
         {
             if(i == currentChoiceIndex)
-            {
-                buttons[i].GetComponentInChildren<BattleChoiceButton>().OnSelected();
-            }
+            {buttons[i].GetComponentInChildren<BattleChoiceButton>().OnSelected();}
             else
-            {
-                buttons[i].GetComponentInChildren<BattleChoiceButton>().OffSelected();
-            }
+            {buttons[i].GetComponentInChildren<BattleChoiceButton>().OffSelected();}
         }
     }
 }
