@@ -35,8 +35,9 @@ public class BattleManager : MonoBehaviour
     private float timerDuration = 0f;
     private float timeLimit = 0f;
     //總計時器時間
-    private float totalTimerLimit = 0f;
-    private float totalTimerDuration = 0f;
+    private float totalTimeLimit = 0f;
+    private float totalTimeDuration = 0f;
+    private bool isTotalTimeRunning = false;
 
      
     [Header("角色資訊")]
@@ -77,17 +78,25 @@ public class BattleManager : MonoBehaviour
 
     public void Update()
     {
+        
         if(isTimerRunning)
         {
             //計算剩餘時間
             timerDuration += Time.deltaTime;
             float remainingTime = timeLimit - timerDuration; //剩餘時間
-            float t = Mathf.Clamp01(remainingTime / timeLimit); //計算剩餘時間比例
-            timerBar.rectTransform.localScale = new Vector3(t, 1, 1); //更新計時器UI
+            
+            //計算連續對話剩餘時間
+            if(isTotalTimeRunning)
+            {
+                totalTimeDuration += Time.deltaTime;
+                float remainingTotalTime = totalTimeLimit - totalTimeDuration;
+                float t = Mathf.Clamp01(remainingTotalTime / totalTimeLimit);
+                timerBar.rectTransform.localScale = new Vector3(t, 1, 1); //更新計時器UI
+            }
 
             if(timerDuration >= timeLimit)
             {
-                timerBar.rectTransform.localScale = new Vector3(t, 1, 1);
+                timerBar.rectTransform.localScale = new Vector3(0, 1, 1);
                 StopTimer();
                 HandleTimeOut();
                 ContinueBattle();
@@ -95,6 +104,8 @@ public class BattleManager : MonoBehaviour
                 {
                     if(itCanChoosing){ContinueBattle();}
                 }
+                else
+                {isTotalTimeRunning = false;}
             }
         }
 
@@ -123,6 +134,7 @@ public class BattleManager : MonoBehaviour
         battleUI.SetActive(true);
         if(story != null) return;
 
+        totalTimeDuration = 0f;
         story = new Story(inkAsset.text); //讀取Ink檔案
         currentState = BattleState.InProgress; //設定戰鬥狀態為進行中
         
@@ -131,6 +143,7 @@ public class BattleManager : MonoBehaviour
 
     private void ContinueBattle()
     {
+        List<string> tags = story.currentTags;
         if(story == null) return;
         
         //如果故事結束，停止戰鬥
@@ -147,14 +160,24 @@ public class BattleManager : MonoBehaviour
             
             if(story.variablesState["timeLimit"] != null)
             {
+                //總時間限制
+                if(story.variablesState["totalTimeLimit"] is int totalLimit)
+                {totalTimeLimit = (float)totalLimit;}
+                else if(story.variablesState["totalTimeLimit"] is float totalLimitFloat)
+                {totalTimeLimit = totalLimitFloat;}
+                else if(story.variablesState["totalTimeLimit"] is double totalLimitDouble)
+                {totalTimeLimit = (float)totalLimitDouble;}
+                if(totalTimeLimit > 0){isTotalTimeRunning = true;}
+                //單個對話時間限制
                 if(story.variablesState["timeLimit"] is int limit)
                 {timeLimit = (float)limit;}
                 else if(story.variablesState["timeLimit"] is float limitFloat)
                 {timeLimit = limitFloat;}
                 else if(story.variablesState["timeLimit"] is double limitDouble)
                 {timeLimit = (float)limitDouble;}
-                if(timeLimit > 0){StartTimer(timeLimit);}
+                if(timeLimit > 0){StartTimer(timeLimit,totalTimeLimit);}
             }
+
             currentState = BattleState.Choosing;
             currentChoiceIndex = 0;
             UpdateChoiceButtons();
@@ -177,17 +200,13 @@ public class BattleManager : MonoBehaviour
             readingCoroutine = StartCoroutine(ReadingDialogue(fullDialogue));
             isReadingDialogue = true;
 
-            //顯示對話
-            // dialogueTmpText.text = story.Continue();
-
             currentState = BattleState.InProgress;
 
             //更新角色名稱
-            List<string> tags = story.currentTags;
             if(tags.Count > 0)
             {
-                if(tags.Count > 0)
-                {nameTmpText.text = tags[0];}
+                if(tags.Count > 0 && tags[0] != "NONE")
+                {nameTmpText.text = tags[0];nameBox.SetActive(true);}
             }
             else
             {
@@ -198,8 +217,15 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void StartTimer(float limit)
+    public void StartTimer(float limit,float totalLimit)
     {
+        if(isTotalTimeRunning == false)
+        {
+            totalTimeLimit = totalLimit;
+            totalTimeDuration = 0f;
+            isTotalTimeRunning = true;
+        }
+        //單個對話計時器
         timeLimit = limit;
         timerDuration = 0f;
         isTimerRunning = true;
@@ -210,7 +236,6 @@ public class BattleManager : MonoBehaviour
     {
         timerDuration = 0f;
         isTimerRunning = false;
-        
     }
 
     private void HandleTimeOut()
@@ -234,6 +259,12 @@ public class BattleManager : MonoBehaviour
         
         for (int i = 0; i < activeCount; i++)
         {
+            //這個選項的 tags
+            List<string> tags = story.currentChoices[i].tags;
+            string buttonTextColor;string buttonAction;
+            if(tags[1] == null || tags[1] == "BLACK"){buttonTextColor = "#000000";}else{buttonTextColor = tags[1];}
+            if(tags[2] == null){buttonAction = "";}else{buttonAction = tags[2];}
+
             // 如果該按鈕正在執行刪除動畫，先等待它結束
             if (deletionCoroutines.ContainsKey(buttons[i]))
             {
@@ -242,7 +273,7 @@ public class BattleManager : MonoBehaviour
             }
             buttons[i].SetActive(true);
             // 同時啟動新增文字的動畫，不做 yield return 來等待
-            StartCoroutine(MakeChoiceButton(buttons[i], story.currentChoices[i].text, () => { finishedCount++; }));
+            StartCoroutine(MakeChoiceButton(buttons[i], story.currentChoices[i].text,buttonTextColor, () => { finishedCount++; }));
         }
         
         // 等待直到所有按鈕都完成動畫
@@ -274,6 +305,7 @@ public class BattleManager : MonoBehaviour
     {
         story.ChooseChoiceIndex(index);
         currentState = BattleState.InProgress;
+        isTotalTimeRunning = false;
         StopTimer();
         ContinueBattle();
     }
@@ -299,14 +331,25 @@ public class BattleManager : MonoBehaviour
     {
         isReadingDialogue = true;
         dialogueTmpText.text = "";
-        for(int i = 0; i < fullText.Length; i++)
-        {
-            dialogueTmpText.text += fullText[i];
-            yield return new WaitForSeconds(readingSpeed);
 
-            if(isReadingDialogue == false)
-            {break;}
+        if(story.variablesState["itCanChoosing"] is bool itCanChoosing)
+        {
+            if(itCanChoosing)
+            {dialogueTmpText.text = fullText;}
+            else
+            {
+                for(int i = 0; i < fullText.Length; i++)
+                {
+                    dialogueTmpText.text += fullText[i];
+                    yield return new WaitForSeconds(readingSpeed);
+
+                    if(isReadingDialogue == false)
+                    {break;}
+                }
+            }
         }
+
+        
         dialogueTmpText.text = fullText;
         isReadingDialogue = false;
         readingCoroutine = null;
@@ -359,10 +402,17 @@ public class BattleManager : MonoBehaviour
         button.SetActive(false);
     }
 
-    private IEnumerator MakeChoiceButton(GameObject button,string text, System.Action onComplete = null)
+    private IEnumerator MakeChoiceButton(GameObject button,string text,string _color, System.Action onComplete = null)
     {
+
         TMP_Text btnText = button.GetComponentInChildren<TMP_Text>();
         btnText.text = "";
+
+        if(_color == "#000000")
+        {btnText.color = Color.black;}
+        else if(_color == "RED")
+        {btnText.color = Color.red;}
+        
         for (int i = 0; i < text.Length; i++)
         {
             btnText.text += text[i];
