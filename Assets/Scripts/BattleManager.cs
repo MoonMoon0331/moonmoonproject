@@ -18,6 +18,14 @@ public class BattleManager : MonoBehaviour
     public GameObject dialogueBox; 
     public TMP_Text dialogueTmpText;
     
+    [Header("閱讀文字相關變數")]
+    public float readingSpeed = 0.025f; //對話框速度
+    public float optionLetterDeleteDelay = 0.05f; // 選項刪除速度
+    public float optionLetterAddDelay = 0.025f; // 選項新增速度
+    private bool isReadingDialogue = false;
+    private string currentDialogueFullText= "";
+    private Coroutine readingCoroutine = null;
+    private Dictionary<GameObject, Coroutine> deletionCoroutines = new Dictionary<GameObject, Coroutine>();
 
     [Header("計時器")]
     public GameObject timer;
@@ -26,8 +34,11 @@ public class BattleManager : MonoBehaviour
     private bool isTimerRunning = false;
     private float timerDuration = 0f;
     private float timeLimit = 0f;
+    //總計時器時間
+    private float totalTimerLimit = 0f;
+    private float totalTimerDuration = 0f;
 
-    
+     
     [Header("角色資訊")]
     public Image Player;
     public Image Enemy;
@@ -66,20 +77,13 @@ public class BattleManager : MonoBehaviour
 
     public void Update()
     {
-        if (currentState == BattleState.InProgress && InputManager.Instance.GetSubmitInput())
-        {ContinueBattle();}
-
-        else if (currentState == BattleState.Choosing)
-        {HandleChoiceSelection();}
-
         if(isTimerRunning)
         {
+            //計算剩餘時間
             timerDuration += Time.deltaTime;
-
-            // 使用方法二：修改 localScale (記得確保 timerBar 的 pivot 設定在 (0.5, 0.5))
-            float remainingTime = timeLimit - timerDuration;
-            float t = Mathf.Clamp01(remainingTime / timeLimit);
-            timerBar.rectTransform.localScale = new Vector3(t, 1, 1);
+            float remainingTime = timeLimit - timerDuration; //剩餘時間
+            float t = Mathf.Clamp01(remainingTime / timeLimit); //計算剩餘時間比例
+            timerBar.rectTransform.localScale = new Vector3(t, 1, 1); //更新計時器UI
 
             if(timerDuration >= timeLimit)
             {
@@ -87,41 +91,57 @@ public class BattleManager : MonoBehaviour
                 StopTimer();
                 HandleTimeOut();
                 ContinueBattle();
-                if(story.variablesState["itCanChoosing"] is bool itCanChoosing)
-                {if(itCanChoosing){ContinueBattle();}}
-                
+                if(story.variablesState["itCanChoosing"] is bool itCanChoosing) //如果可以選擇，繼續戰鬥
+                {
+                    if(itCanChoosing){ContinueBattle();}
+                }
             }
         }
+
+        if (currentState == BattleState.InProgress && InputManager.Instance.GetSubmitInput())
+        {
+            if(isReadingDialogue)
+            {CompleteReading();}
+            else
+            {ContinueBattle();}
+        }
+
+        else if (currentState == BattleState.Choosing)
+        {HandleChoiceSelection();}
     }
 
-    public void StopBattle()
+    public void StopBattle() //停止戰鬥
     {
-        InputManager.Instance.EnablePlayerInput();
-        battleUI.SetActive(false);
+        InputManager.Instance.EnablePlayerInput(); //啟用玩家輸入
+        battleUI.SetActive(false); //關閉戰鬥UI
     }
 
-    public void StartBattle()
+    public void StartBattle() //開始戰鬥
     {
         InputManager.Instance.EnableUIInput();
         
         battleUI.SetActive(true);
         if(story != null) return;
 
-        story = new Story(inkAsset.text);
-        currentState = BattleState.InProgress;
+        story = new Story(inkAsset.text); //讀取Ink檔案
+        currentState = BattleState.InProgress; //設定戰鬥狀態為進行中
         
-        ContinueBattle();
+        ContinueBattle();  //繼續戰鬥
     }
 
     private void ContinueBattle()
     {
         if(story == null) return;
+        
+        //如果故事結束，停止戰鬥
         if(!story.canContinue && story.currentChoices.Count == 0)
         {
             story = null;
             StopBattle();
             return;
         }
+
+        //如果有選項，顯示選項
         if(story.currentChoices.Count > 0)
         {
             
@@ -137,17 +157,29 @@ public class BattleManager : MonoBehaviour
             }
             currentState = BattleState.Choosing;
             currentChoiceIndex = 0;
-
             UpdateChoiceButtons();
         }
+        //如果有對話可繼續
         if(story.canContinue)
         {
             //重置選項及計時器
-            for(int i = 0; i < buttons.Length; i++)
-            {buttons[i].gameObject.SetActive(false);}
+            HiddenButtons();
             timer.SetActive(false);
 
-            dialogueTmpText.text = story.Continue();
+            //取得對話內容
+            string fullDialogue = story.Continue();
+            currentDialogueFullText = fullDialogue;
+            if(readingCoroutine != null)
+            {
+                StopCoroutine(readingCoroutine);
+                readingCoroutine = null;
+            }
+            readingCoroutine = StartCoroutine(ReadingDialogue(fullDialogue));
+            isReadingDialogue = true;
+
+            //顯示對話
+            // dialogueTmpText.text = story.Continue();
+
             currentState = BattleState.InProgress;
 
             //更新角色名稱
@@ -183,8 +215,7 @@ public class BattleManager : MonoBehaviour
 
     private void HandleTimeOut()
     {
-        for(int i = 0; i < buttons.Length; i++)
-        {buttons[i].gameObject.SetActive(false);}
+        HiddenButtons();
         
         currentState = BattleState.InProgress;
         story.ChoosePathString(story.variablesState["chapterName"].ToString());
@@ -193,17 +224,30 @@ public class BattleManager : MonoBehaviour
 
     private void UpdateChoiceButtons()
     {
-        for(int i = 0; i < buttons.Length; i++)
-        {
-            if(i < story.currentChoices.Count)
-            {
-                buttons[i].gameObject.SetActive(true);
-                buttons[i].GetComponentInChildren<BattleChoiceButton>().UpdateButtonText(story.currentChoices[i].text);
-            }
-            else
-            {buttons[i].gameObject.SetActive(false);}
-        }
+        StartCoroutine(UpdateChoiceButtonsCoroutine());
+    }
 
+    private IEnumerator UpdateChoiceButtonsCoroutine()
+    {
+        int activeCount = Mathf.Min(buttons.Length, story.currentChoices.Count);
+        int finishedCount = 0;
+        
+        for (int i = 0; i < activeCount; i++)
+        {
+            // 如果該按鈕正在執行刪除動畫，先等待它結束
+            if (deletionCoroutines.ContainsKey(buttons[i]))
+            {
+                yield return deletionCoroutines[buttons[i]];
+                deletionCoroutines.Remove(buttons[i]);
+            }
+            buttons[i].SetActive(true);
+            // 同時啟動新增文字的動畫，不做 yield return 來等待
+            StartCoroutine(MakeChoiceButton(buttons[i], story.currentChoices[i].text, () => { finishedCount++; }));
+        }
+        
+        // 等待直到所有按鈕都完成動畫
+        yield return new WaitUntil(() => finishedCount == activeCount);
+        
         currentChoiceIndex = 0;
         HighlightCurrentChoice();
     }
@@ -249,5 +293,83 @@ public class BattleManager : MonoBehaviour
             else
             {buttons[i].GetComponentInChildren<BattleChoiceButton>().OffSelected();}
         }
+    }
+
+    private IEnumerator ReadingDialogue(string fullText)
+    {
+        isReadingDialogue = true;
+        dialogueTmpText.text = "";
+        for(int i = 0; i < fullText.Length; i++)
+        {
+            dialogueTmpText.text += fullText[i];
+            yield return new WaitForSeconds(readingSpeed);
+
+            if(isReadingDialogue == false)
+            {break;}
+        }
+        dialogueTmpText.text = fullText;
+        isReadingDialogue = false;
+        readingCoroutine = null;
+    }
+
+    public void HiddenButtons()
+    {
+        for(int i = 0; i < buttons.Length; i++)
+        {
+            if(buttons[i].activeSelf)
+            {
+                // 先確認是否已有該按鈕的刪除 Coroutine
+                if (deletionCoroutines.ContainsKey(buttons[i]))
+                {
+                    StopCoroutine(deletionCoroutines[buttons[i]]);
+                    deletionCoroutines.Remove(buttons[i]);
+                }
+                // 啟動刪除 Coroutine，並記錄它的引用
+                Coroutine c = StartCoroutine(DeleteButtonTextLetterByLetter(buttons[i]));
+                deletionCoroutines[buttons[i]] = c;
+            }
+        }
+    }
+
+    // 按下確定鍵時，直接顯示完整對話
+    private void CompleteReading()
+    {
+        if(readingCoroutine != null)
+        {
+            StopCoroutine(readingCoroutine);
+            readingCoroutine = null;
+        }
+        dialogueTmpText.text = currentDialogueFullText;
+        isReadingDialogue = false;
+    }
+
+    private IEnumerator DeleteButtonTextLetterByLetter(GameObject button)
+    {
+        TMP_Text btnText = button.GetComponentInChildren<TMP_Text>();
+        if(btnText == null)
+            yield break;
+        string fullText = btnText.text;
+        int total = fullText.Length;
+        for(int i = 0; i < total; i++)
+        {
+            btnText.text = fullText.Substring(0, fullText.Length - i - 1);
+            yield return new WaitForSeconds(optionLetterDeleteDelay);
+        }
+        btnText.text = "";
+        button.SetActive(false);
+    }
+
+    private IEnumerator MakeChoiceButton(GameObject button,string text, System.Action onComplete = null)
+    {
+        TMP_Text btnText = button.GetComponentInChildren<TMP_Text>();
+        btnText.text = "";
+        for (int i = 0; i < text.Length; i++)
+        {
+            btnText.text += text[i];
+            yield return new WaitForSeconds(optionLetterAddDelay);
+        }
+        btnText.text = text;
+        if (onComplete != null)
+        onComplete();
     }
 }
