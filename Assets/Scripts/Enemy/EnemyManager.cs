@@ -8,7 +8,7 @@ public class EnemyManager : MonoBehaviour
     [Header("詐騙對象資料庫")]
     public EnemyDatabase enemyDB;  // 參考你的 ScriptableObject
 
-    private Dictionary<int, EnemyRuntimeState> runtimeStates = new Dictionary<int, EnemyRuntimeState>(); //敵人的狀態
+    private Dictionary<int, EnemyRuntimeData> runtimeData = new Dictionary<int, EnemyRuntimeData>(); //敵人的狀態
     private List<int> availableEnemyList = new List<int>(); // 可用的敵人清單
     private List<int> completedEnemyList = new List<int>(); // 完成的敵人清單
 
@@ -29,7 +29,7 @@ public class EnemyManager : MonoBehaviour
     void Awake()
     {
         foreach (var enemyData in enemyDB.enemyList)
-        {runtimeStates[enemyData.enemyID] = EnemyRuntimeState.UnLock;}
+        {runtimeData[enemyData.enemyID] = new EnemyRuntimeData();}
     }
 
     public void Start()
@@ -57,10 +57,10 @@ public class EnemyManager : MonoBehaviour
             if (index < enemyDB.enemyList.Count)
             {
                 EnemyData enemyData = enemyDB.enemyList[index];
-                if (runtimeStates[enemyData.enemyID] == EnemyRuntimeState.Available)
+                // 根據動態資料判斷是否可用，這裡我們只顯示狀態為 Available 的敵人
+                if (runtimeData[enemyData.enemyID].state == EnemyRuntimeData.EnemyRuntimeState.Available)
                 {
                     availableEnemyList.Add(enemyData.enemyID);
-                    GameObject enemy = Instantiate(enemyPrefab, transform);
                 }
             }
         }
@@ -83,26 +83,20 @@ public class EnemyManager : MonoBehaviour
         Debug.Log("Call " + enemyData.enemyName + " at " + enemyData.enemyCallNumber);
     }
 
-    public EnemyRuntimeState GetEnemyState(int enemyID)
+    
+
+    // 將敵人設置為可用狀態
+    public void SetEnemyAvailable(int enemyID)
     {
-        if (runtimeStates.ContainsKey(enemyID))
-        return runtimeStates[enemyID];
-        runtimeStates[enemyID] = EnemyRuntimeState.UnLock;
-        return runtimeStates[enemyID];
+        if (runtimeData.ContainsKey(enemyID))
+            runtimeData[enemyID].state = EnemyRuntimeData.EnemyRuntimeState.Available;
     }
 
-    //將敵人設置為可用
-    public void IsEnemyAvailable(int enemyID)
-    {
-        if(runtimeStates.ContainsKey(enemyID))
-            runtimeStates[enemyID] = EnemyRuntimeState.Available;
-    }
-
-    //將敵人設置為完成狀態
+    // 將敵人標記為完成（例如已被詐騙）
     public void MarkEnemyScammed(int enemyID)
     {
-        if (runtimeStates.ContainsKey(enemyID))
-            runtimeStates[enemyID] = EnemyRuntimeState.Completed;
+        if (runtimeData.ContainsKey(enemyID))
+            runtimeData[enemyID].state = EnemyRuntimeData.EnemyRuntimeState.Completed;
     }
 
 }

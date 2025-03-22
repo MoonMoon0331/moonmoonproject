@@ -13,8 +13,11 @@ public class EnemyData
     public Sprite enemySprite; // 詐騙對象的圖片
 }
 
+// 敵人的狀態
 [System.Serializable]
-public enum EnemyRuntimeState{UnLock,Available,Completed}
+
+public class EnemyRuntimeData
+{public enum EnemyRuntimeState{UnLock,Available,Completed};public int enemyCompletionRate;public EnemyRuntimeState state = EnemyRuntimeState.UnLock;}
 
 [CreateAssetMenu(fileName = "EnemyDatabase", menuName = "Data/EnemyDatabase")]
 public class EnemyDatabase : ScriptableObject
