@@ -57,12 +57,9 @@ public class EnemyManager : MonoBehaviour
             if (index < enemyDB.enemyList.Count)
             {
                 EnemyData enemyData = enemyDB.enemyList[index];
-                // 根據動態資料判斷是否可用，這裡我們只顯示狀態為 Available 的敵人
-                if (runtimeData[enemyData.enemyID].state == EnemyRuntimeData.EnemyRuntimeState.Available)
-                {
-                    availableEnemyList.Add(enemyData.enemyID);
-                }
-            }
+                transform.GetChild(i).gameObject.GetComponent<EnemyCard>().InformationUpdate(enemyData, runtimeData[enemyData.enemyID]);
+                transform.GetChild(i).gameObject.SetActive(true);
+            }   
         }
 
         // 更新翻頁按鈕狀態
