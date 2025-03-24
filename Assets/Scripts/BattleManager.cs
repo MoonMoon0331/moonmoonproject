@@ -73,7 +73,7 @@ public class BattleManager : MonoBehaviour
 
     public void Start()
     {
-        StopBattle();
+
     }
 
     public void Update()
@@ -124,6 +124,7 @@ public class BattleManager : MonoBehaviour
     public void StopBattle() //停止戰鬥
     {
         InputManager.Instance.EnablePlayerInput(); //啟用玩家輸入
+        UIManager.Instance.OpenEnemyMenu(); //開啟敵人選單
         battleUI.SetActive(false); //關閉戰鬥UI
     }
 
@@ -143,7 +144,9 @@ public class BattleManager : MonoBehaviour
 
     private void ContinueBattle()
     {
-        List<string> tags = story.currentTags;
+        List<string> tags = new List<string>();
+        if(story.currentTags.Count > 0)
+        {tags = story.currentTags;}
         if(story == null) return;
         
         //如果故事結束，停止戰鬥
@@ -421,5 +424,12 @@ public class BattleManager : MonoBehaviour
         btnText.text = text;
         if (onComplete != null)
         onComplete();
+    }
+
+    public void CallEnemy(EnemyData enemyData)
+    {
+        inkAsset = enemyData._inkAssets;
+        InputManager.Instance.EnableUIInput();
+        StartBattle();
     }
 }

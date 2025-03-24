@@ -10,6 +10,7 @@ public class EnemyData
     public string enemyCallNumber; // 詐騙對象的電話號碼
     public string enemyInformation; // 詐騙對象的資訊
     public TextAsset _inkAssets; // 詐騙對象的對話內容
+    public int enemyDifficulty; // 詐騙對象的難度
 
     [Header("Enemy Sprite")]
     public Sprite enemySprite; // 詐騙對象的圖片
@@ -32,10 +33,21 @@ public class EnemyData
 [System.Serializable]
 
 public class EnemyRuntimeData
-{public enum EnemyRuntimeState{Lock,Available,Completed};public int enemyCompletionRate;public EnemyRuntimeState state = EnemyRuntimeState.Lock;}
+{
+    public int enemyID;
+    public enum EnemyRuntimeState{Lock,Available,Completed};
+    public int enemyCompletionRate;
+    public EnemyRuntimeState state = EnemyRuntimeState.Lock;
+}
 
 [CreateAssetMenu(fileName = "EnemyDatabase", menuName = "Data/EnemyDatabase")]
 public class EnemyDatabase : ScriptableObject
 {
     public List<EnemyData> enemyList = new List<EnemyData>(); // 詐騙對象清單
+}
+
+[CreateAssetMenu(fileName = "EnemyRuntimeDatabase", menuName = "Data/EnemyRuntimeDatabase")]
+public class EnemyRuntimeDatabase : ScriptableObject
+{
+    public List<EnemyRuntimeData> enemyRuntimeList = new List<EnemyRuntimeData>(); // 詐騙對象狀態清單
 }

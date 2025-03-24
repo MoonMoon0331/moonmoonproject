@@ -37,13 +37,13 @@ VAR itCanChoosing = false
 ->CallEnd
 
 ===policeFraud===
-~itCanChoosing = false
 我才不相信呢。
+~itCanChoosing = false
 ->CallEnd
 
 ===relativeFraud===
-~itCanChoosing = false
 欸不是欸，你應該打錯電話了喔。
+~itCanChoosing = false
 ->END
 
 ===CallEnd===

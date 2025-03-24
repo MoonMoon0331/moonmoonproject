@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
     // public GameObject pauseMenu;
     // public GameObject inventoryMenu;
 
+    public GameObject enemyMenu;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -48,5 +50,18 @@ public class UIManager : MonoBehaviour
     public void CloseInventoryMenu()
     {
         // inventoryMenu.SetActive(false);
+    }
+
+    //敵人選單
+    public void OpenEnemyMenu()
+    {
+        enemyMenu.SetActive(true);
+        InputManager.Instance.EnableUIInput();
+        enemyMenu.GetComponentInChildren<EnemyManager>().ShowEnemy();
+    }
+    public void CloseEnemyMenu()
+    {
+        enemyMenu.SetActive(false);
+        InputManager.Instance.EnablePlayerInput();
     }
 }

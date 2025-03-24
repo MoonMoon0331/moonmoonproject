@@ -19,7 +19,7 @@ public class PlayerSeatDialogue : MonoBehaviour
     {
         if(InputManager.Instance.GetInteractInput() && isNearPlayer)
         {
-            BattleManager.Instance.StartBattle();
+            UIManager.Instance.OpenEnemyMenu();
         }
     }
 
