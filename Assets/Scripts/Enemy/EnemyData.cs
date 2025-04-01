@@ -29,16 +29,7 @@ public class EnemyData
     public Sprite enemyPortraitThinking; // 思考的頭像
 }
 
-// 敵人的狀態
-[System.Serializable]
 
-public class EnemyRuntimeData
-{
-    public int enemyID;
-    public enum EnemyRuntimeState{Lock,Available,Completed};
-    public int enemyCompletionRate;
-    public EnemyRuntimeState state = EnemyRuntimeState.Lock;
-}
 
 [CreateAssetMenu(fileName = "EnemyDatabase", menuName = "Data/EnemyDatabase")]
 public class EnemyDatabase : ScriptableObject

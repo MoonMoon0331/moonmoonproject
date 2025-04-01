@@ -25,6 +25,8 @@ public class CharacterData
     public Sprite characterPortraitSad;     // 難過的頭像
     public Sprite characterPortraitSurprised; // 驚訝的頭像
     public Sprite characterPortraitThinking;  // 思考的頭像
+    [Header("Character Action")]
+    public Sprite characterAction;        // 角色行動圖片
 }
 
 // 角色動態資料
