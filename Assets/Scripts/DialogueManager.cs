@@ -185,4 +185,17 @@ public class DialogueManager : MonoBehaviour
         currentChoiceIndex = index;
         HighlightCurrentChoice();
     }
+    //更新對話資訊
+    public void UpdateDialogueInformation()
+    {
+        //更新對話中使用的名字
+        if(story.variablesState.TryGetDefaultVariableValue("NPCName"))
+        {
+            string npcName = story.variablesState["NPCName"].ToString();
+            if(npcName == "")
+            {nameTmpText.text = npcName;nameBox.SetActive(false);return;}
+            else
+            {nameTmpText.text = npcName;}
+        }
+    }
 }

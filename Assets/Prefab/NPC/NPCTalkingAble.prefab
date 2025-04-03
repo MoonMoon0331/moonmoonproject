@@ -82,7 +82,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19bf02e00bbd1eb4ea6b4c8302524733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  npcDataBase: {fileID: 11400000, guid: bff23983c284571419626dffcd0a9237, type: 2}
+  npcID: 0
   Button: {fileID: 4433831077421269929}
+  NPCSprite: {fileID: 7120008301583229676}
   inkAssets: {fileID: 4900000, guid: 6ab5f71b99cc2f34eb53ead0f2556eb0, type: 3}
 --- !u!1 &4433831077421269929
 GameObject:
@@ -182,7 +185,7 @@ GameObject:
   - component: {fileID: 2020288646325253076}
   - component: {fileID: 7840265732559418044}
   m_Layer: 0
-  m_Name: TestNpc
+  m_Name: NPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

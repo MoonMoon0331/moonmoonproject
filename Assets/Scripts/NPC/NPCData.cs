@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Ink.Runtime;
+using UnityEditor.Animations;
+
 
 [System.Serializable]
 public class NPCData
@@ -8,6 +10,7 @@ public class NPCData
     public int npcID; // NPC ID
     public string npcName; // NPC名稱
     public TextAsset _inkAssets; // NPC的對話內容
+    public AnimatorController animatorController; // NPC的動畫控制器
 
     [Header("NPC Sprite")]
     public Sprite npcSprite; // NPC的圖片

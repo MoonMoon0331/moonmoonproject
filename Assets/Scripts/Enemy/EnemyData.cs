@@ -29,16 +29,3 @@ public class EnemyData
     public Sprite enemyPortraitThinking; // 思考的頭像
 }
 
-
-
-[CreateAssetMenu(fileName = "EnemyDatabase", menuName = "Data/EnemyDatabase")]
-public class EnemyDatabase : ScriptableObject
-{
-    public List<EnemyData> enemyList = new List<EnemyData>(); // 詐騙對象清單
-}
-
-[CreateAssetMenu(fileName = "EnemyRuntimeDatabase", menuName = "Data/EnemyRuntimeDatabase")]
-public class EnemyRuntimeDatabase : ScriptableObject
-{
-    public List<EnemyRuntimeData> enemyRuntimeList = new List<EnemyRuntimeData>(); // 詐騙對象狀態清單
-}

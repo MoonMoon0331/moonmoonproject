@@ -1,9 +1,9 @@
-->Scene1
 VAR Favorability = 0
+->Scene1
 
 
 ===Scene1===
-問大家一個問題 #小美
+問大家一個問題 
 
 1+2等於多少 #
 
