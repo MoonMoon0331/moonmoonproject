@@ -6,6 +6,8 @@ VAR leftEmotion = "D"
 VAR rightEmotion = "D"
 //角色對話節點
 VAR NPCNode = 0
+//講話角色 (L)左邊->我方角色(R)右邊->對方角色
+VAR currentNPC = "L"
 //目前顯示角色名稱
 VAR NPCName = "劉婉蓉"
 

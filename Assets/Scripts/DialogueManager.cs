@@ -27,6 +27,11 @@ public class DialogueManager : MonoBehaviour
     private enum DialogueState { InProgress, Choosing, Ended }
     private DialogueState currentState = DialogueState.Ended;
 
+    //角色資訊
+    public NPCData npcData = new NPCData();
+
+    //對話資訊
+
 
     private void Awake()
     {
@@ -57,15 +62,19 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public bool StartDialogue(TextAsset inkAssets)
+    public bool StartDialogue(NPCData _npcData)
     {
         dialogueBox.SetActive(true);
 
         if (story != null) return false;
 
-        story = new Story(inkAssets.text); //new Story 裡面放json檔的文字，讓 Story 初始化
+        story = new Story(_npcData._inkAssets.text); //new Story 裡面放json檔的文字，讓 Story 初始化
         currentState = DialogueState.InProgress;
 
+        //載入對話數據
+        
+
+        //
         InputManager.Instance.EnableUIInput();
         NextDialog();
 
@@ -82,6 +91,8 @@ public class DialogueManager : MonoBehaviour
     public void NextDialog() 
     {
         if (story == null) return;
+
+
         if (!story.canContinue && story.currentChoices.Count == 0) //如果story不能繼續 && 沒有選項，則代表對話結束
         { 
             story = null;
@@ -100,17 +111,10 @@ public class DialogueManager : MonoBehaviour
             currentState = DialogueState.InProgress;
 
             // 讀取 Tags
-            List<string> tags = story.currentTags;
-            if (tags.Count > 0)
+            if(story.currentTags.Count > 0)
             {
-                // 假設第一個 Tag 是角色名字
-                nameTmpText.text = tags[0]; 
-            }
-            else
-            {
-                // 如果沒有 Tag，清空名字
-                nameTmpText.text = "";
-                nameBox.SetActive(false);
+                if(story.currentTags[0] == "UpddateDialogueInformation")
+                {UpdateDialogueInformation();}
             }
         }
     }
@@ -185,17 +189,31 @@ public class DialogueManager : MonoBehaviour
         currentChoiceIndex = index;
         HighlightCurrentChoice();
     }
-    //更新對話資訊
+
+    //更新對話資訊(1.角色名字 2.角色表情)
     public void UpdateDialogueInformation()
     {
+        //初始化
+        nameBox.SetActive(false);
+
         //更新對話中使用的名字
         if(story.variablesState.TryGetDefaultVariableValue("NPCName"))
         {
             string npcName = story.variablesState["NPCName"].ToString();
             if(npcName == "")
-            {nameTmpText.text = npcName;nameBox.SetActive(false);return;}
+            {nameTmpText.text = npcName;nameBox.SetActive(false);}
             else
-            {nameTmpText.text = npcName;}
+            {nameTmpText.text = npcName;nameBox.SetActive(true);}
+        }
+        else{nameBox.SetActive(false);}
+    }
+
+    //載入對話背景資訊
+    public void LoadingDialogueInformation()
+    {
+        if(story.variablesState.TryGetDefaultVariableValue("currentDay"))
+        {
+            
         }
     }
 }

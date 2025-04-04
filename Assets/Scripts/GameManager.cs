@@ -9,8 +9,16 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     // 遊戲狀態或數據
-    public bool isGamePaused = false;
     public bool isDialogueButtonIsOn = false;
+
+    //遊戲時間數據
+    public int currentDay = 1;
+    public float timeHour = 0;
+    
+    //遊戲狀態
+    private enum GameState{MainMenu,InGame,PauseMenu}
+    private GameState currentGameState = GameState.InGame;
+    private GameState originalGameState = GameState.InGame;
 
 
     private void Awake()
@@ -28,18 +36,22 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     public void PauseGame()
     {
-        isGamePaused = true;
+        originalGameState = currentGameState;
+        //暫停遊戲
+        currentGameState = GameState.PauseMenu;
         Time.timeScale = 0;
     }
 
     public void ResumeGame()
     {
-        isGamePaused = false;
+        //恢復遊戲
+        currentGameState = originalGameState;
         Time.timeScale = 1;
     }
+
 }
