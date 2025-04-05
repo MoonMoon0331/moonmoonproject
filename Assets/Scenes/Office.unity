@@ -5336,8 +5336,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc154948fed9d5740871ab25fc4aceae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGamePaused: 0
   isDialogueButtonIsOn: 0
+  currentDay: 1
+  timeHour: 0
+  playerName: "\u6C5F\u6771\u5347"
+  playerSprite: {fileID: 21300000, guid: 5e6badb2200dee449a14ce8e86d998dc, type: 3}
+  playerSpriteAngry: {fileID: 21300000, guid: eaf81581f9cb4d84594fe802f92a1131, type: 3}
+  playerSpriteSad: {fileID: 21300000, guid: 3de362b3d4219a042bdfb56b11fa504f, type: 3}
+  playerSpriteHappy: {fileID: 21300000, guid: 52968ced90975384dbf1729bb9a7c15a, type: 3}
+  playerSpriteSurprised: {fileID: 21300000, guid: 2244c5fb102b0eb4ba90fb9ead2e5e98, type: 3}
+  playerSpriteThinking: {fileID: 21300000, guid: 34584c979844423489b8de40e1e9a174, type: 3}
+  playerPortrait: {fileID: 21300000, guid: 766dc14d4280cb04b98ddb2c0dd68fee, type: 3}
+  playerPortraitAngry: {fileID: 21300000, guid: 287bf73cd996a94428d0395ef217570f, type: 3}
+  playerPortraitSad: {fileID: 21300000, guid: c8c016c955eff7b49b2e6e463d919f5d, type: 3}
+  playerPortraitHappy: {fileID: 21300000, guid: 8e387240c32b079469d8118ded720ed2, type: 3}
+  playerPortraitSurprised: {fileID: 21300000, guid: 5c3d5ef38b540224baa11c7955532b56, type: 3}
+  playerPortraitThinking: {fileID: 21300000, guid: ee44695f142e3d84b978b9323882fe58, type: 3}
 --- !u!4 &655124728
 Transform:
   m_ObjectHideFlags: 0
@@ -50258,6 +50272,8 @@ MonoBehaviour:
   _inkAssets: {fileID: 0}
   nameBox: {fileID: 1832551687}
   nameTmpText: {fileID: 1732023551}
+  playerPortraitImage: {fileID: 145756402}
+  npcDataBase: {fileID: 11400000, guid: bff23983c284571419626dffcd0a9237, type: 2}
 --- !u!1 &1845696240
 GameObject:
   m_ObjectHideFlags: 0

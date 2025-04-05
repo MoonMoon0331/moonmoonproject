@@ -33,7 +33,7 @@ public class NPCDialogue : MonoBehaviour
     {
         if(InputManager.Instance.GetInteractInput() && isNearPlayer)
         {
-            DialogueManager.Instance.StartDialogue(npcData);
+            DialogueManager.Instance.StartDialogue(npcData._inkAssets);
         }
     }
 

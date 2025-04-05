@@ -5,6 +5,7 @@ using UnityEngine;
 using Ink.Runtime;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -27,8 +28,11 @@ public class DialogueManager : MonoBehaviour
     private enum DialogueState { InProgress, Choosing, Ended }
     private DialogueState currentState = DialogueState.Ended;
 
-    //角色資訊
-    public NPCData npcData = new NPCData();
+    [Header("角色大頭貼")]
+    public Image playerPortraitImage;
+
+    [Header("NPC資料庫")]
+    public NPCDataBase npcDataBase; 
 
     //對話資訊
 
@@ -62,19 +66,19 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public bool StartDialogue(NPCData _npcData)
+    public bool StartDialogue(TextAsset _inkAssets)
     {
         dialogueBox.SetActive(true);
 
         if (story != null) return false;
 
-        story = new Story(_npcData._inkAssets.text); //new Story 裡面放json檔的文字，讓 Story 初始化
+        story = new Story(_inkAssets.text); //new Story 裡面放json檔的文字，讓 Story 初始化
         currentState = DialogueState.InProgress;
 
         //載入對話數據
-        
+        LoadingDialogueInformation();
 
-        //
+        //更改輸入系統
         InputManager.Instance.EnableUIInput();
         NextDialog();
 
@@ -113,7 +117,7 @@ public class DialogueManager : MonoBehaviour
             // 讀取 Tags
             if(story.currentTags.Count > 0)
             {
-                if(story.currentTags[0] == "UpddateDialogueInformation")
+                if(story.currentTags[0] == "U")
                 {UpdateDialogueInformation();}
             }
         }
@@ -195,6 +199,13 @@ public class DialogueManager : MonoBehaviour
     {
         //初始化
         nameBox.SetActive(false);
+        //更新對話中使用的表情
+        if(story.variablesState.TryGetDefaultVariableValue("currentEmotion"))
+        {
+            
+        }
+
+        
 
         //更新對話中使用的名字
         if(story.variablesState.TryGetDefaultVariableValue("NPCName"))
@@ -202,6 +213,8 @@ public class DialogueManager : MonoBehaviour
             string npcName = story.variablesState["NPCName"].ToString();
             if(npcName == "")
             {nameTmpText.text = npcName;nameBox.SetActive(false);}
+            else if(npcName == "Player")
+            {nameTmpText.text = GameManager.Instance.playerName;nameBox.SetActive(true);}
             else
             {nameTmpText.text = npcName;nameBox.SetActive(true);}
         }
@@ -212,8 +225,6 @@ public class DialogueManager : MonoBehaviour
     public void LoadingDialogueInformation()
     {
         if(story.variablesState.TryGetDefaultVariableValue("currentDay"))
-        {
-            
-        }
+        {story.variablesState["currentDay"] = GameManager.Instance.currentDay;}
     }
 }

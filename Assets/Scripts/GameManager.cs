@@ -20,6 +20,21 @@ public class GameManager : MonoBehaviour
     private GameState currentGameState = GameState.InGame;
     private GameState originalGameState = GameState.InGame;
 
+    //主角資訊
+    public string playerName = "江東升";
+    public Sprite playerSprite;
+    public Sprite playerSpriteAngry;
+    public Sprite playerSpriteSad;
+    public Sprite playerSpriteHappy;
+    public Sprite playerSpriteSurprised;
+    public Sprite playerSpriteThinking;
+    public Sprite playerPortrait;
+    public Sprite playerPortraitAngry;
+    public Sprite playerPortraitSad;
+    public Sprite playerPortraitHappy;
+    public Sprite playerPortraitSurprised;
+    public Sprite playerPortraitThinking;
+
 
     private void Awake()
     {
