@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using Ink.Runtime;
 using System.Threading;
+using System;
 // using Microsoft.Unity.VisualStudio.Editor;
 
 public class BattleManager : MonoBehaviour
@@ -50,6 +51,9 @@ public class BattleManager : MonoBehaviour
     public TextAsset inkAsset;
     private Story story;
 
+    [Header("敵人資料庫")]
+    public EnemyDataBase enemyDataBase; //敵人資料庫
+
     //選擇
     private int currentChoiceIndex = 0;
 
@@ -69,11 +73,6 @@ public class BattleManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-    }
-
-    public void Start()
-    {
-
     }
 
     public void Update()
@@ -138,6 +137,9 @@ public class BattleManager : MonoBehaviour
         totalTimeDuration = 0f;
         story = new Story(inkAsset.text); //讀取Ink檔案
         currentState = BattleState.InProgress; //設定戰鬥狀態為進行中
+
+        //載入日期及對話節點
+        LoadingStory();
         
         ContinueBattle();  //繼續戰鬥
     }
@@ -183,7 +185,9 @@ public class BattleManager : MonoBehaviour
 
             currentState = BattleState.Choosing;
             currentChoiceIndex = 0;
-            UpdateChoiceButtons();
+
+            //更新選項按鈕
+            // UpdateChoiceButtons();
         }
         //如果有對話可繼續
         if(story.canContinue)
@@ -205,18 +209,12 @@ public class BattleManager : MonoBehaviour
 
             currentState = BattleState.InProgress;
 
-            //更新角色名稱
-            if(tags.Count > 0)
+            //讀取 Tags
+            if(story.currentTags.Count > 0)
             {
-                if(tags.Count > 0 && tags[0] != "NONE")
-                {nameTmpText.text = tags[0];nameBox.SetActive(true);}
+                if(story.currentTags[0] == "U")
+                {UpdateBattleDialogueInfo(tags);}
             }
-            else
-            {
-                nameTmpText.text = "";
-                nameBox.SetActive(false);
-            }
-
         }
     }
 
@@ -431,5 +429,49 @@ public class BattleManager : MonoBehaviour
         inkAsset = enemyData._inkAssets;
         InputManager.Instance.EnableUIInput();
         StartBattle();
+    }
+    
+    //根據天數及節點來載入故事
+    private void LoadingStory()
+    {
+        switch (GameManager.Instance.currentDay)
+        {
+            case 1:
+                story.ChoosePathString("Day1");
+                break;
+            case 2:
+                story.ChoosePathString("Day2");
+                break;
+            case 3:
+                story.ChoosePathString("Day3");
+                break;
+            case 4:
+                story.ChoosePathString("Day4");
+                break;
+            case 5:
+                story.ChoosePathString("Day5");
+                break;
+            case 6:
+                story.ChoosePathString("Day6");
+                break;
+            case 7:
+                story.ChoosePathString("Day7");
+                break;
+            default:
+                Debug.LogError("無效的天數！");
+                break;
+        }
+    }
+
+    //更新對話角色表情及對話框名字
+    public void UpdateBattleDialogueInfo(List<string> tags)
+    {
+        //初始化
+        nameBox.SetActive(false);
+
+        int enemyID = Int32.TryParse(tags[1], out enemyID) ? enemyID : 0;
+        string currentStaing = tags[2];
+        string npcName = tags[3];
+        
     }
 }

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c23ad97f7ea3384aa31fa1f1cca53eb, type: 3}
+  m_Name: EnemyDataBase 1
+  m_EditorClassIdentifier: 
+  enemyList:
+  - enemyID: 0
+    enemyName: "\u8001\u5976\u5976"
+    enemyCallNumber: 0900-000-000
+    enemyInformation: "\u89AA\u5207\u7684\u8001\u5976\u5976"
+    _inkAssets: {fileID: 4900000, guid: 473667d83363c664eb772163cf238f47, type: 3}
+    enemyDifficulty: 0
+    enemySprite: {fileID: 21300000, guid: 6b1d193d79db14145bd1a42e2c4eebea, type: 3}
+    enemySpriteAngry: {fileID: 21300000, guid: f990e06df05b24f419261241b2d39f90, type: 3}
+    enemySpriteSad: {fileID: 21300000, guid: ace33f04e081bc04abf6fc9fe897db96, type: 3}
+    enemySpriteHappy: {fileID: 21300000, guid: 8019d0700f4f0cf49a22eabed73dbc8b, type: 3}
+    enemySpriteSurprised: {fileID: 21300000, guid: bdbb5dca54fdcf74f8b1e1084a5523a4, type: 3}
+    enemySpriteThinking: {fileID: 21300000, guid: 0888ae22be99d374baa9524a0c73be23, type: 3}
+    enemyPortrait: {fileID: 21300000, guid: ae908a82ae9c4594eb97453e8626ca0c, type: 3}
+    enemyPortraitAngry: {fileID: 21300000, guid: e96e0108686968f4e856ca17ad0beaf4, type: 3}
+    enemyPortraitSad: {fileID: 21300000, guid: d2c3706d00fbbd74896b2f77ec8c3832, type: 3}
+    enemyPortraitHappy: {fileID: 21300000, guid: 66e7e7eb99a2c7849bc9aa6b2c6bcea4, type: 3}
+    enemyPortraitSurprised: {fileID: 21300000, guid: 66b91237fe3ee20449161dc0096f851f, type: 3}
+    enemyPortraitThinking: {fileID: 21300000, guid: 8f11806f809745044b61751a205a7f7a, type: 3}

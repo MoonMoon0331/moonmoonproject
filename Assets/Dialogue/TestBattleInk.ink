@@ -3,7 +3,7 @@ VAR totalTimeLimit = 0.0
 VAR chapterName = "Opening1"
 VAR itCanChoosing = false
 
-
+//角色表情 (D)Default(H)Happy(S)Sad(A)Angry(T)Thinking(K)Shock
 
 ->Day1
 

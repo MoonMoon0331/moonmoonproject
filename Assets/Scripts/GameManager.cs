@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,8 +13,8 @@ public class GameManager : MonoBehaviour
     public bool isDialogueButtonIsOn = false;
 
     //遊戲時間數據
-    public int currentDay = 1;
-    public float timeHour = 0;
+    public int currentDay ;
+    public float timeHour ;
     
     //遊戲狀態
     private enum GameState{MainMenu,InGame,PauseMenu}
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
+        currentDay = 2;
     }
 
     public void PauseGame()

@@ -6,6 +6,7 @@ using Ink.Runtime;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using System;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -77,6 +78,7 @@ public class DialogueManager : MonoBehaviour
 
         //載入對話數據
         LoadingDialogueInformation();
+        
 
         //更改輸入系統
         InputManager.Instance.EnableUIInput();
@@ -97,6 +99,7 @@ public class DialogueManager : MonoBehaviour
         if (story == null) return;
 
 
+
         if (!story.canContinue && story.currentChoices.Count == 0) //如果story不能繼續 && 沒有選項，則代表對話結束
         { 
             story = null;
@@ -111,15 +114,20 @@ public class DialogueManager : MonoBehaviour
         }
         if (story.canContinue) //如果可以繼續下一句對話，執行 story.Continue()
         {
-            dialogueTmpText.text = story.Continue();
-            currentState = DialogueState.InProgress;
+            string nextLine = story.Continue(); //讀取對話內容
 
             // 讀取 Tags
             if(story.currentTags.Count > 0)
             {
                 if(story.currentTags[0] == "U")
-                {UpdateDialogueInformation();}
+                {UpdateDialogueInformation(story.currentTags);}
             }
+
+            // 讀取對話內容
+            dialogueTmpText.text = nextLine;
+            currentState = DialogueState.InProgress;
+
+            
         }
     }
 
@@ -184,7 +192,6 @@ public class DialogueManager : MonoBehaviour
         story.ChooseChoiceIndex(index); //使用 ChooseChoiceIndex 選擇當前選項
         for (int i = 0; i < buttons.Length; i++) //選擇完，將按鈕隱藏
         {buttons[i].gameObject.SetActive(false);}
-
         NextDialog();
     }
 
@@ -195,36 +202,114 @@ public class DialogueManager : MonoBehaviour
     }
 
     //更新對話資訊(1.角色名字 2.角色表情)
-    public void UpdateDialogueInformation()
+    public void UpdateDialogueInformation(List<string> tags)
     {
         //初始化
         nameBox.SetActive(false);
+        //如果沒有標籤，則不執行
+        if(tags.Count == 0 || tags[0] != "U") return; 
+
+        int npcID = Int32.TryParse(tags[1], out npcID) ? npcID : 0; //將字串轉換成整數
+        string currentEmotion = tags[2];
+        string npcName = tags[3];
+
         //更新對話中使用的表情
-        if(story.variablesState.TryGetDefaultVariableValue("currentEmotion"))
+        if(npcID == 999) //如果是主角
         {
-            
+            switch (currentEmotion)
+            {
+                case "D":
+                    playerPortraitImage.sprite = GameManager.Instance.playerPortrait;
+                    break;
+                case "H":
+                    playerPortraitImage.sprite = GameManager.Instance.playerPortraitHappy;
+                    break;
+                case "S":
+                    playerPortraitImage.sprite = GameManager.Instance.playerPortraitSad;
+                    break;
+                case "A":
+                    playerPortraitImage.sprite = GameManager.Instance.playerPortraitAngry;
+                    break;
+                case "T":
+                    playerPortraitImage.sprite = GameManager.Instance.playerPortraitThinking;
+                    break;
+                case "K":
+                    playerPortraitImage.sprite = GameManager.Instance.playerPortraitSurprised;
+                    break;
+                default:
+                    playerPortraitImage.sprite = GameManager.Instance.playerPortrait;
+                    break;
+            }
+        }
+        else //如果是NPC
+        {
+            switch (currentEmotion)
+            {
+                case "D":
+                    playerPortraitImage.sprite = npcDataBase.GetNPCData(npcID).npcPortrait;
+                    break;
+                case "H":
+                    playerPortraitImage.sprite = npcDataBase.GetNPCData(npcID).npcPortraitHappy;
+                    break;
+                case "S":
+                    playerPortraitImage.sprite = npcDataBase.GetNPCData(npcID).npcPortraitSad;
+                    break;
+                case "A":
+                    playerPortraitImage.sprite = npcDataBase.GetNPCData(npcID).npcPortraitAngry;
+                    break;
+                case "T":
+                    playerPortraitImage.sprite = npcDataBase.GetNPCData(npcID).npcPortraitThinking;
+                    break;
+                case "K":
+                    playerPortraitImage.sprite = npcDataBase.GetNPCData(npcID).npcPortraitSurprised;
+                    break;
+                default:
+                    playerPortraitImage.sprite = npcDataBase.GetNPCData(npcID).npcPortrait;
+                    break;
+
+            }
         }
 
-        
-
         //更新對話中使用的名字
-        if(story.variablesState.TryGetDefaultVariableValue("NPCName"))
-        {
-            string npcName = story.variablesState["NPCName"].ToString();
-            if(npcName == "")
+            if(npcName == "none")
             {nameTmpText.text = npcName;nameBox.SetActive(false);}
             else if(npcName == "Player")
             {nameTmpText.text = GameManager.Instance.playerName;nameBox.SetActive(true);}
+            else if(npcName == "ID")
+            {nameTmpText.text = npcDataBase.GetNPCData(npcID).npcName;nameBox.SetActive(true);}
             else
             {nameTmpText.text = npcName;nameBox.SetActive(true);}
-        }
-        else{nameBox.SetActive(false);}
     }
 
     //載入對話背景資訊
     public void LoadingDialogueInformation()
     {
-        if(story.variablesState.TryGetDefaultVariableValue("currentDay"))
-        {story.variablesState["currentDay"] = GameManager.Instance.currentDay;}
+        switch(GameManager.Instance.currentDay)
+        {
+            case 1:
+                story.ChoosePathString("Day1"); //選擇對話路徑
+                break;
+            case 2:
+                story.ChoosePathString("Day2"); //選擇對話路徑
+                break;
+            case 3:
+                story.ChoosePathString("Day3"); //選擇對話路徑
+                break;
+            case 4:
+                story.ChoosePathString("Day4"); //選擇對話路徑
+                break;
+            case 5:
+                story.ChoosePathString("Day5"); //選擇對話路徑
+                break;
+            case 6:
+                story.ChoosePathString("Day6"); //選擇對話路徑
+                break;
+            case 7:
+                story.ChoosePathString("Day7"); //選擇對話路徑
+                break;
+            default:
+                Debug.LogError("無效的天數！");
+                break;
+        }
     }
 }

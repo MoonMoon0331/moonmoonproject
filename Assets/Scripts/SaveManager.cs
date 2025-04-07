@@ -19,6 +19,7 @@ public class SaveData
 [System.Serializable]
 public class NPCRuntimeData
 {
+    public int npcID; //NPC ID
     public string name;
     public string currentStoryNodeName; //當前故事節點名稱
 }

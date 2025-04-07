@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EnemyManager : MonoBehaviour
 {
     [Header("詐騙對象資料庫")]
-    public EnemyDatabase enemyDB;  // 參考你的 ScriptableObject
+    public EnemyDataBase enemyDB;  // 參考你的 ScriptableObject
     public EnemyRuntimeDatabase enemyRuntimeDB; // 參考你的 ScriptableObject
 
     private Dictionary<int, EnemyRuntimeData> runtimeData = new Dictionary<int, EnemyRuntimeData>(); //敵人的狀態
@@ -120,7 +120,6 @@ public class EnemyManager : MonoBehaviour
 
     void OnCallEnemy(EnemyData enemyData)
     {
-        Debug.Log("Call Enemy " + enemyData.enemyID);
         // 呼叫敵人的對話
         BattleManager.Instance.CallEnemy(enemyData);   
         transform.parent.gameObject.SetActive(false);
@@ -196,7 +195,6 @@ public class EnemyManager : MonoBehaviour
     // 選擇敵人
     public void SelectEnemy(int enemyID)
     {
-        Debug.Log("Select Enemy " + enemyID);
         EnemyData enemyData = enemyDB.enemyList.Find(x => x.enemyID == enemyID);
         EnemyRuntimeData enemyRuntimeData = runtimeData[enemyID];
 
@@ -204,14 +202,11 @@ public class EnemyManager : MonoBehaviour
         switch (enemyRuntimeData.state)
         {
             case EnemyRuntimeData.EnemyRuntimeState.Lock:
-                Debug.Log("Enemy is locked");
                 break;
             case EnemyRuntimeData.EnemyRuntimeState.Available:
-                Debug.Log("Enemy is available");
                 OnCallEnemy(enemyData);
                 break;
             case EnemyRuntimeData.EnemyRuntimeState.Completed:
-                Debug.Log("Enemy is completed");
                 break;
         }
     }
