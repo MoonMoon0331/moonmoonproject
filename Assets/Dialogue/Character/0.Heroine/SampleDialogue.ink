@@ -35,5 +35,16 @@ VAR NPCNode = 0
     那就好了，今天又是美好的一天 :) #U#0#H#ID
     ->END
     
+===Day3===
+    ->END
+===Day4===
+    ->END
+===Day5===
+    ->END
+===Day6===
+    ->END
+===Day7===
+    ->END
+    
 
 ->END

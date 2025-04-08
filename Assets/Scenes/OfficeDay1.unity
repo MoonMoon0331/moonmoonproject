@@ -12918,6 +12918,7 @@ MonoBehaviour:
   nameTmpText: {fileID: 168448824}
   nameBox: {fileID: 214220695}
   inkAsset: {fileID: 4900000, guid: 473667d83363c664eb772163cf238f47, type: 3}
+  enemyDataBase: {fileID: 11400000, guid: e210370fc08798d479ad63ca281a4477, type: 2}
 --- !u!1 &1585592547
 GameObject:
   m_ObjectHideFlags: 0
@@ -53388,7 +53389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b300481b684a594199c1f31036a5372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyDB: {fileID: 11400000, guid: 4d1dc1d80a1981441910749790db4ca0, type: 2}
+  enemyDB: {fileID: 11400000, guid: e210370fc08798d479ad63ca281a4477, type: 2}
   enemyRuntimeDB: {fileID: 11400000, guid: 23a3d7e3582c5da408e5c4e50e63732f, type: 2}
   enemyPrefab: {fileID: 726242807162491369, guid: d9c04f0df72fa0248bd83f3b586ba361, type: 3}
   maxEnemyPerPage: 9

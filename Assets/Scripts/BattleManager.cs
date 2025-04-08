@@ -124,6 +124,7 @@ public class BattleManager : MonoBehaviour
     {
         InputManager.Instance.EnablePlayerInput(); //啟用玩家輸入
         UIManager.Instance.OpenEnemyMenu(); //開啟敵人選單
+        currentState = BattleState.Ended; //設定戰鬥狀態為結束
         battleUI.SetActive(false); //關閉戰鬥UI
     }
 
@@ -187,7 +188,7 @@ public class BattleManager : MonoBehaviour
             currentChoiceIndex = 0;
 
             //更新選項按鈕
-            // UpdateChoiceButtons();
+            UpdateChoiceButtons();
         }
         //如果有對話可繼續
         if(story.canContinue)
@@ -198,6 +199,13 @@ public class BattleManager : MonoBehaviour
 
             //取得對話內容
             string fullDialogue = story.Continue();
+
+            if(story.currentTags.Count > 0)
+            {
+                if(story.currentTags[0] == "U")
+                {UpdateBattleDialogueInfo(story.currentTags);}
+            }
+
             currentDialogueFullText = fullDialogue;
             if(readingCoroutine != null)
             {
@@ -209,12 +217,7 @@ public class BattleManager : MonoBehaviour
 
             currentState = BattleState.InProgress;
 
-            //讀取 Tags
-            if(story.currentTags.Count > 0)
-            {
-                if(story.currentTags[0] == "U")
-                {UpdateBattleDialogueInfo(tags);}
-            }
+            
         }
     }
 
@@ -258,13 +261,24 @@ public class BattleManager : MonoBehaviour
         int activeCount = Mathf.Min(buttons.Length, story.currentChoices.Count);
         int finishedCount = 0;
         
+        
+
         for (int i = 0; i < activeCount; i++)
         {
             //這個選項的 tags
             List<string> tags = story.currentChoices[i].tags;
-            string buttonTextColor;string buttonAction;
-            if(tags[1] == null || tags[1] == "BLACK"){buttonTextColor = "#000000";}else{buttonTextColor = tags[1];}
-            if(tags[2] == null){buttonAction = "";}else{buttonAction = tags[2];}
+            string buttonTextColor = "#000000";
+            string buttonAction = "";
+            if(story.currentChoices[i].tags.Count > 6)
+            {
+                if(story.currentChoices[i].tags[6] != null && story.currentChoices[i].tags[6] != "BLACK")
+                    buttonTextColor = story.currentChoices[i].tags[6];
+            }
+            if(story.currentChoices[i].tags.Count > 7)
+            {
+                if(story.currentChoices[i].tags[7] != null)
+                    buttonAction = story.currentChoices[i].tags[7];
+            }
 
             // 如果該按鈕正在執行刪除動畫，先等待它結束
             if (deletionCoroutines.ContainsKey(buttons[i]))
@@ -333,29 +347,21 @@ public class BattleManager : MonoBehaviour
         isReadingDialogue = true;
         dialogueTmpText.text = "";
 
-        if(story.variablesState["itCanChoosing"] is bool itCanChoosing)
+        // 如果你希望始終打字機效果，忽略 itCanChoosing 的設定
+        // 或者你可以根據其它條件來決定
+        for (int i = 0; i < fullText.Length; i++)
         {
-            if(itCanChoosing)
-            {dialogueTmpText.text = fullText;}
-            else
-            {
-                for(int i = 0; i < fullText.Length; i++)
-                {
-                    dialogueTmpText.text += fullText[i];
-                    yield return new WaitForSeconds(readingSpeed);
-
-                    if(isReadingDialogue == false)
-                    {break;}
-                }
-            }
+            dialogueTmpText.text += fullText[i];
+            yield return new WaitForSeconds(readingSpeed);
+            if (!isReadingDialogue)
+                break;
         }
 
-        
+        // 確保完整文字被顯示
         dialogueTmpText.text = fullText;
         isReadingDialogue = false;
         readingCoroutine = null;
     }
-
     public void HiddenButtons()
     {
         for(int i = 0; i < buttons.Length; i++)
@@ -459,19 +465,94 @@ public class BattleManager : MonoBehaviour
                 break;
             default:
                 Debug.LogError("無效的天數！");
+                story.ChoosePathString("Day1"); //預設載入第一天的故事
                 break;
         }
     }
 
     //更新對話角色表情及對話框名字
-    public void UpdateBattleDialogueInfo(List<string> tags)
+    private void UpdateBattleDialogueInfo(List<string> tags)
     {
         //初始化
         nameBox.SetActive(false);
 
-        int enemyID = Int32.TryParse(tags[1], out enemyID) ? enemyID : 0;
-        string currentStaing = tags[2];
-        string npcName = tags[3];
+        int leftEnemyID = Int32.TryParse(tags[1], out leftEnemyID) ? leftEnemyID : 0;
+        string leftCurrentEmotion = tags[2];
+        int rightEnemyID = Int32.TryParse(tags[3], out rightEnemyID) ? rightEnemyID : 0;
+        string rightCurrentEmotion = tags[4];
+        string npcName = tags[5];
+
+        UpdatePlayerEmotion(leftEnemyID,leftCurrentEmotion,Player); //更新玩家表情
+        UpdatePlayerEmotion(rightEnemyID,rightCurrentEmotion,Enemy); //更新敵人表情
+
+        //更新對話框名字
+        if(npcName == "none")
+        {nameTmpText.text = npcName;nameBox.SetActive(false);}
+        else if(npcName == "Player")
+        {nameTmpText.text = GameManager.Instance.playerName;nameBox.SetActive(true);}
+        else if(npcName == "ID")
+        {nameTmpText.text = enemyDataBase.GetEnemyData(rightEnemyID).enemyName;nameBox.SetActive(true);}
+        else
+        {nameTmpText.text = npcName;nameBox.SetActive(true);}
+    }
+    private void UpdatePlayerEmotion(int npcID,string emotion,Image image)
+    {
+        if(npcID == 999)
+        {
+            switch(emotion)
+            {
+                case "D":
+                    image.sprite = GameManager.Instance.playerSprite;
+                    break;
+                case "H":
+                    image.sprite = GameManager.Instance.playerSpriteHappy;
+                    break;
+                case "A":
+                    image.sprite = GameManager.Instance.playerSpriteAngry;
+                    break;
+                case "S":
+                    image.sprite = GameManager.Instance.playerSpriteSad;
+                    break;
+                case "T":
+                    image.sprite = GameManager.Instance.playerSpriteThinking;
+                    break;
+                case "K":
+                    image.sprite = GameManager.Instance.playerSpriteSurprised;
+                    break;
+                default:
+                    image.sprite = GameManager.Instance.playerSprite;
+                    break;
+            }
+        }
+        else
+        {
+            switch(emotion)
+            {
+                case "D":
+                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySprite;
+                    break;
+                case "H":
+                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySpriteHappy;
+                    break;
+                case "A":
+                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySpriteAngry;
+                    break;
+                case "S":
+                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySpriteSad;
+                    break;
+                case "T":
+                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySpriteThinking;
+                    break;
+                case "K":
+                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySpriteSurprised;
+                    break;
+                default:
+                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySprite;
+                    break;
+            }
+        }
+
         
     }
+        
 }

@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        currentDay = 2;
+        currentDay = 1;
     }
 
     public void PauseGame()
