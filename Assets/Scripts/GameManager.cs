@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+// using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -36,6 +38,9 @@ public class GameManager : MonoBehaviour
     public Sprite playerPortraitSurprised;
     public Sprite playerPortraitThinking;
 
+    //現在場景
+    private Scene currentScene;
+
 
     private void Awake()
     {
@@ -52,7 +57,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        //初始化遊戲狀態
         currentDay = 1;
+
+        //取得目前的活動場景
+        currentScene = SceneManager.GetActiveScene();
+        if(currentScene.name == "MainMenu")
+        {currentGameState = GameState.MainMenu;}
     }
 
     public void PauseGame()
@@ -68,6 +79,34 @@ public class GameManager : MonoBehaviour
         //恢復遊戲
         currentGameState = originalGameState;
         Time.timeScale = 1;
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        //載入場景
+        SceneManager.LoadScene(sceneName);
+        currentScene = SceneManager.GetActiveScene();
+        if(currentScene.name == "MainMenu")
+        {currentGameState = GameState.MainMenu;}
+        else
+        {currentGameState = GameState.InGame;}
+    }
+
+    public void SwitchGameState(string newGameState)
+    {
+        //切換遊戲狀態
+        switch (newGameState)
+        {
+            case "MainMenu":
+                currentGameState = GameState.MainMenu;
+                break;
+            case "InGame":
+                currentGameState = GameState.InGame;
+                break;
+            case "PauseMenu":
+                currentGameState = GameState.PauseMenu;
+                break;
+        }
     }
 
 }

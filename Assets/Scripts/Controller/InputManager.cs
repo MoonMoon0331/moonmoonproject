@@ -31,7 +31,18 @@ public class InputManager : MonoBehaviour
     {EnablePlayerInput();}
 
     private void OnDisable()
-    {DisableAllInputs();}
+    {
+        if(inputActions!=null)
+            DisableAllInputs();
+    }
+
+    private void OnDestroy()
+{
+    if (inputActions != null)
+    {
+        inputActions.Dispose();
+    }
+}
 
     // 切換到 Player 操作
     public void EnablePlayerInput()

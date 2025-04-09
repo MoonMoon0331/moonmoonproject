@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 9d5c5eb1bf800dc4aa990debec5c093c, type: 3}
   m_Name: NPCDataBase
-  m_EditorClassIdentifier: Assembly-CSharp::NPCDataBase
+  m_EditorClassIdentifier: 
   npcList:
   - npcID: 0
-    npcName: "\u5289\u5A49\u84C9"
+    npcName: "\u5289\u5B9B\u84C9"
     _inkAssets: {fileID: 4900000, guid: 5711f97944a2a524cb5f29b4227d5000, type: 3}
-    animatorController: {fileID: 9100000, guid: c1e2f2251a71c6f4780da1d8cf92bd79, type: 2}
+    animatorController: {fileID: 0}
     npcSprite: {fileID: 21300000, guid: 1a11f3dd8135f894c89f084f48cf6a8c, type: 3}
     npcSpriteAngry: {fileID: 21300000, guid: 9cb548da85ab40a438456eff4edd48c2, type: 3}
     npcSpriteSad: {fileID: 21300000, guid: e9d12424d09476848b978be961002f56, type: 3}

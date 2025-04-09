@@ -5712,6 +5712,10 @@ PrefabInstance:
       propertyPath: inkAssets
       value: 
       objectReference: {fileID: 4900000, guid: 473667d83363c664eb772163cf238f47, type: 3}
+    - target: {fileID: 5039267161026033095, guid: 61b986aab22533946b8c4c677fb2121f, type: 3}
+      propertyPath: npcDataBase
+      value: 
+      objectReference: {fileID: 11400000, guid: bff23983c284571419626dffcd0a9237, type: 2}
     - target: {fileID: 7961944193103970658, guid: 61b986aab22533946b8c4c677fb2121f, type: 3}
       propertyPath: m_SortingLayer
       value: 2
@@ -50274,7 +50278,7 @@ MonoBehaviour:
   nameBox: {fileID: 1832551687}
   nameTmpText: {fileID: 1732023551}
   playerPortraitImage: {fileID: 145756402}
-  npcDataBase: {fileID: 11400000, guid: bff23983c284571419626dffcd0a9237, type: 2}
+  npcDataBase: {fileID: 0}
 --- !u!1 &1845696240
 GameObject:
   m_ObjectHideFlags: 0
@@ -52712,6 +52716,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5039267161026033095, guid: 61b986aab22533946b8c4c677fb2121f, type: 3}
+      propertyPath: npcDataBase
+      value: 
+      objectReference: {fileID: 11400000, guid: bff23983c284571419626dffcd0a9237, type: 2}
     - target: {fileID: 7961944193103970658, guid: 61b986aab22533946b8c4c677fb2121f, type: 3}
       propertyPath: m_SortingLayer
       value: 2
