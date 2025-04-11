@@ -94,7 +94,7 @@ public class MainMenu : MonoBehaviour
 
     private void NewGame()
     {
-        SceneTransitionManager.Instance.StartSceneTransition("OfficeDay1");
+        SceneTransitionManager.Instance.StartSceneTransition("Office");
         GameManager.Instance.SwitchGameState("InGame");
     }
 }
