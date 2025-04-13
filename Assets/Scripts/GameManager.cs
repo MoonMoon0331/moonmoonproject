@@ -80,18 +80,7 @@ public class GameManager : MonoBehaviour
         currentGameState = originalGameState;
         Time.timeScale = 1;
     }
-
-    public void LoadScene(string sceneName)
-    {
-        //載入場景
-        SceneManager.LoadScene(sceneName);
-        currentScene = SceneManager.GetActiveScene();
-        if(currentScene.name == "MainMenu")
-        {currentGameState = GameState.MainMenu;}
-        else
-        {currentGameState = GameState.InGame;}
-    }
-
+    
     public void SwitchGameState(string newGameState)
     {
         //切換遊戲狀態

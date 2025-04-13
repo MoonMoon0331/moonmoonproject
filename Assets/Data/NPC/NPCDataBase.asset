@@ -14,9 +14,143 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcList:
   - npcID: 0
-    npcName: "\u5289\u5B9B\u84C9"
+    npcName: "\u767D\u6674\u65B9"
     _inkAssets: {fileID: 4900000, guid: 5711f97944a2a524cb5f29b4227d5000, type: 3}
-    animatorController: {fileID: 0}
+    npcSprite: {fileID: 21300000, guid: 1a11f3dd8135f894c89f084f48cf6a8c, type: 3}
+    npcSpriteAngry: {fileID: 21300000, guid: 9cb548da85ab40a438456eff4edd48c2, type: 3}
+    npcSpriteSad: {fileID: 21300000, guid: e9d12424d09476848b978be961002f56, type: 3}
+    npcSpriteHappy: {fileID: 21300000, guid: 0d0864585c2470e48bf4a6ec7ed68d80, type: 3}
+    npcSpriteSurprised: {fileID: 21300000, guid: 103eb770af24d7b41a2c0478da23d86d, type: 3}
+    npcSpriteThinking: {fileID: 21300000, guid: 2817de11762d16840a5577b27302e616, type: 3}
+    npcPortrait: {fileID: 21300000, guid: ffef435ecadc38d409dec9bc06439862, type: 3}
+    npcPortraitAngry: {fileID: 21300000, guid: 84b815fb4a6230a439aa6ce57ad4f100, type: 3}
+    npcPortraitSad: {fileID: 21300000, guid: 367099bf977cd9a4a921e450923360dc, type: 3}
+    npcPortraitHappy: {fileID: 21300000, guid: fd6b29c5e3945e7459b228a74eedc303, type: 3}
+    npcPortraitSurprised: {fileID: 21300000, guid: 525c450d9bbcde248854443aebd423be, type: 3}
+    npcPortraitThinking: {fileID: 21300000, guid: 4e244762e12d4624b8c64e8eb0b5ab49, type: 3}
+  - npcID: 1
+    npcName: "\u6797\u58A8"
+    _inkAssets: {fileID: 4900000, guid: 5711f97944a2a524cb5f29b4227d5000, type: 3}
+    npcSprite: {fileID: 21300000, guid: 1a11f3dd8135f894c89f084f48cf6a8c, type: 3}
+    npcSpriteAngry: {fileID: 21300000, guid: 9cb548da85ab40a438456eff4edd48c2, type: 3}
+    npcSpriteSad: {fileID: 21300000, guid: e9d12424d09476848b978be961002f56, type: 3}
+    npcSpriteHappy: {fileID: 21300000, guid: 0d0864585c2470e48bf4a6ec7ed68d80, type: 3}
+    npcSpriteSurprised: {fileID: 21300000, guid: 103eb770af24d7b41a2c0478da23d86d, type: 3}
+    npcSpriteThinking: {fileID: 21300000, guid: 2817de11762d16840a5577b27302e616, type: 3}
+    npcPortrait: {fileID: 21300000, guid: ffef435ecadc38d409dec9bc06439862, type: 3}
+    npcPortraitAngry: {fileID: 21300000, guid: 84b815fb4a6230a439aa6ce57ad4f100, type: 3}
+    npcPortraitSad: {fileID: 21300000, guid: 367099bf977cd9a4a921e450923360dc, type: 3}
+    npcPortraitHappy: {fileID: 21300000, guid: fd6b29c5e3945e7459b228a74eedc303, type: 3}
+    npcPortraitSurprised: {fileID: 21300000, guid: 525c450d9bbcde248854443aebd423be, type: 3}
+    npcPortraitThinking: {fileID: 21300000, guid: 4e244762e12d4624b8c64e8eb0b5ab49, type: 3}
+  - npcID: 2
+    npcName: "\u66F9\u54E5"
+    _inkAssets: {fileID: 4900000, guid: 5711f97944a2a524cb5f29b4227d5000, type: 3}
+    npcSprite: {fileID: 21300000, guid: 1a11f3dd8135f894c89f084f48cf6a8c, type: 3}
+    npcSpriteAngry: {fileID: 21300000, guid: 9cb548da85ab40a438456eff4edd48c2, type: 3}
+    npcSpriteSad: {fileID: 21300000, guid: e9d12424d09476848b978be961002f56, type: 3}
+    npcSpriteHappy: {fileID: 21300000, guid: 0d0864585c2470e48bf4a6ec7ed68d80, type: 3}
+    npcSpriteSurprised: {fileID: 21300000, guid: 103eb770af24d7b41a2c0478da23d86d, type: 3}
+    npcSpriteThinking: {fileID: 21300000, guid: 2817de11762d16840a5577b27302e616, type: 3}
+    npcPortrait: {fileID: 21300000, guid: ffef435ecadc38d409dec9bc06439862, type: 3}
+    npcPortraitAngry: {fileID: 21300000, guid: 84b815fb4a6230a439aa6ce57ad4f100, type: 3}
+    npcPortraitSad: {fileID: 21300000, guid: 367099bf977cd9a4a921e450923360dc, type: 3}
+    npcPortraitHappy: {fileID: 21300000, guid: fd6b29c5e3945e7459b228a74eedc303, type: 3}
+    npcPortraitSurprised: {fileID: 21300000, guid: 525c450d9bbcde248854443aebd423be, type: 3}
+    npcPortraitThinking: {fileID: 21300000, guid: 4e244762e12d4624b8c64e8eb0b5ab49, type: 3}
+  - npcID: 3
+    npcName: "\u963F\u5C55"
+    _inkAssets: {fileID: 4900000, guid: 5711f97944a2a524cb5f29b4227d5000, type: 3}
+    npcSprite: {fileID: 21300000, guid: 1a11f3dd8135f894c89f084f48cf6a8c, type: 3}
+    npcSpriteAngry: {fileID: 21300000, guid: 9cb548da85ab40a438456eff4edd48c2, type: 3}
+    npcSpriteSad: {fileID: 21300000, guid: e9d12424d09476848b978be961002f56, type: 3}
+    npcSpriteHappy: {fileID: 21300000, guid: 0d0864585c2470e48bf4a6ec7ed68d80, type: 3}
+    npcSpriteSurprised: {fileID: 21300000, guid: 103eb770af24d7b41a2c0478da23d86d, type: 3}
+    npcSpriteThinking: {fileID: 21300000, guid: 2817de11762d16840a5577b27302e616, type: 3}
+    npcPortrait: {fileID: 21300000, guid: ffef435ecadc38d409dec9bc06439862, type: 3}
+    npcPortraitAngry: {fileID: 21300000, guid: 84b815fb4a6230a439aa6ce57ad4f100, type: 3}
+    npcPortraitSad: {fileID: 21300000, guid: 367099bf977cd9a4a921e450923360dc, type: 3}
+    npcPortraitHappy: {fileID: 21300000, guid: fd6b29c5e3945e7459b228a74eedc303, type: 3}
+    npcPortraitSurprised: {fileID: 21300000, guid: 525c450d9bbcde248854443aebd423be, type: 3}
+    npcPortraitThinking: {fileID: 21300000, guid: 4e244762e12d4624b8c64e8eb0b5ab49, type: 3}
+  - npcID: 4
+    npcName: "\u6587\u68EE"
+    _inkAssets: {fileID: 4900000, guid: 5711f97944a2a524cb5f29b4227d5000, type: 3}
+    npcSprite: {fileID: 21300000, guid: 1a11f3dd8135f894c89f084f48cf6a8c, type: 3}
+    npcSpriteAngry: {fileID: 21300000, guid: 9cb548da85ab40a438456eff4edd48c2, type: 3}
+    npcSpriteSad: {fileID: 21300000, guid: e9d12424d09476848b978be961002f56, type: 3}
+    npcSpriteHappy: {fileID: 21300000, guid: 0d0864585c2470e48bf4a6ec7ed68d80, type: 3}
+    npcSpriteSurprised: {fileID: 21300000, guid: 103eb770af24d7b41a2c0478da23d86d, type: 3}
+    npcSpriteThinking: {fileID: 21300000, guid: 2817de11762d16840a5577b27302e616, type: 3}
+    npcPortrait: {fileID: 21300000, guid: ffef435ecadc38d409dec9bc06439862, type: 3}
+    npcPortraitAngry: {fileID: 21300000, guid: 84b815fb4a6230a439aa6ce57ad4f100, type: 3}
+    npcPortraitSad: {fileID: 21300000, guid: 367099bf977cd9a4a921e450923360dc, type: 3}
+    npcPortraitHappy: {fileID: 21300000, guid: fd6b29c5e3945e7459b228a74eedc303, type: 3}
+    npcPortraitSurprised: {fileID: 21300000, guid: 525c450d9bbcde248854443aebd423be, type: 3}
+    npcPortraitThinking: {fileID: 21300000, guid: 4e244762e12d4624b8c64e8eb0b5ab49, type: 3}
+  - npcID: 5
+    npcName: "\u6C88\u570B\u8C6A"
+    _inkAssets: {fileID: 4900000, guid: 5711f97944a2a524cb5f29b4227d5000, type: 3}
+    npcSprite: {fileID: 21300000, guid: 1a11f3dd8135f894c89f084f48cf6a8c, type: 3}
+    npcSpriteAngry: {fileID: 21300000, guid: 9cb548da85ab40a438456eff4edd48c2, type: 3}
+    npcSpriteSad: {fileID: 21300000, guid: e9d12424d09476848b978be961002f56, type: 3}
+    npcSpriteHappy: {fileID: 21300000, guid: 0d0864585c2470e48bf4a6ec7ed68d80, type: 3}
+    npcSpriteSurprised: {fileID: 21300000, guid: 103eb770af24d7b41a2c0478da23d86d, type: 3}
+    npcSpriteThinking: {fileID: 21300000, guid: 2817de11762d16840a5577b27302e616, type: 3}
+    npcPortrait: {fileID: 21300000, guid: ffef435ecadc38d409dec9bc06439862, type: 3}
+    npcPortraitAngry: {fileID: 21300000, guid: 84b815fb4a6230a439aa6ce57ad4f100, type: 3}
+    npcPortraitSad: {fileID: 21300000, guid: 367099bf977cd9a4a921e450923360dc, type: 3}
+    npcPortraitHappy: {fileID: 21300000, guid: fd6b29c5e3945e7459b228a74eedc303, type: 3}
+    npcPortraitSurprised: {fileID: 21300000, guid: 525c450d9bbcde248854443aebd423be, type: 3}
+    npcPortraitThinking: {fileID: 21300000, guid: 4e244762e12d4624b8c64e8eb0b5ab49, type: 3}
+  - npcID: 6
+    npcName: "\u8A31\u4EA6\u8431"
+    _inkAssets: {fileID: 4900000, guid: 5711f97944a2a524cb5f29b4227d5000, type: 3}
+    npcSprite: {fileID: 21300000, guid: 1a11f3dd8135f894c89f084f48cf6a8c, type: 3}
+    npcSpriteAngry: {fileID: 21300000, guid: 9cb548da85ab40a438456eff4edd48c2, type: 3}
+    npcSpriteSad: {fileID: 21300000, guid: e9d12424d09476848b978be961002f56, type: 3}
+    npcSpriteHappy: {fileID: 21300000, guid: 0d0864585c2470e48bf4a6ec7ed68d80, type: 3}
+    npcSpriteSurprised: {fileID: 21300000, guid: 103eb770af24d7b41a2c0478da23d86d, type: 3}
+    npcSpriteThinking: {fileID: 21300000, guid: 2817de11762d16840a5577b27302e616, type: 3}
+    npcPortrait: {fileID: 21300000, guid: ffef435ecadc38d409dec9bc06439862, type: 3}
+    npcPortraitAngry: {fileID: 21300000, guid: 84b815fb4a6230a439aa6ce57ad4f100, type: 3}
+    npcPortraitSad: {fileID: 21300000, guid: 367099bf977cd9a4a921e450923360dc, type: 3}
+    npcPortraitHappy: {fileID: 21300000, guid: fd6b29c5e3945e7459b228a74eedc303, type: 3}
+    npcPortraitSurprised: {fileID: 21300000, guid: 525c450d9bbcde248854443aebd423be, type: 3}
+    npcPortraitThinking: {fileID: 21300000, guid: 4e244762e12d4624b8c64e8eb0b5ab49, type: 3}
+  - npcID: 7
+    npcName: "\u9673\u5C0F\u5B8F"
+    _inkAssets: {fileID: 4900000, guid: 5711f97944a2a524cb5f29b4227d5000, type: 3}
+    npcSprite: {fileID: 21300000, guid: 1a11f3dd8135f894c89f084f48cf6a8c, type: 3}
+    npcSpriteAngry: {fileID: 21300000, guid: 9cb548da85ab40a438456eff4edd48c2, type: 3}
+    npcSpriteSad: {fileID: 21300000, guid: e9d12424d09476848b978be961002f56, type: 3}
+    npcSpriteHappy: {fileID: 21300000, guid: 0d0864585c2470e48bf4a6ec7ed68d80, type: 3}
+    npcSpriteSurprised: {fileID: 21300000, guid: 103eb770af24d7b41a2c0478da23d86d, type: 3}
+    npcSpriteThinking: {fileID: 21300000, guid: 2817de11762d16840a5577b27302e616, type: 3}
+    npcPortrait: {fileID: 21300000, guid: ffef435ecadc38d409dec9bc06439862, type: 3}
+    npcPortraitAngry: {fileID: 21300000, guid: 84b815fb4a6230a439aa6ce57ad4f100, type: 3}
+    npcPortraitSad: {fileID: 21300000, guid: 367099bf977cd9a4a921e450923360dc, type: 3}
+    npcPortraitHappy: {fileID: 21300000, guid: fd6b29c5e3945e7459b228a74eedc303, type: 3}
+    npcPortraitSurprised: {fileID: 21300000, guid: 525c450d9bbcde248854443aebd423be, type: 3}
+    npcPortraitThinking: {fileID: 21300000, guid: 4e244762e12d4624b8c64e8eb0b5ab49, type: 3}
+  - npcID: 8
+    npcName: "\u963F\u6E90"
+    _inkAssets: {fileID: 4900000, guid: 5711f97944a2a524cb5f29b4227d5000, type: 3}
+    npcSprite: {fileID: 21300000, guid: 1a11f3dd8135f894c89f084f48cf6a8c, type: 3}
+    npcSpriteAngry: {fileID: 21300000, guid: 9cb548da85ab40a438456eff4edd48c2, type: 3}
+    npcSpriteSad: {fileID: 21300000, guid: e9d12424d09476848b978be961002f56, type: 3}
+    npcSpriteHappy: {fileID: 21300000, guid: 0d0864585c2470e48bf4a6ec7ed68d80, type: 3}
+    npcSpriteSurprised: {fileID: 21300000, guid: 103eb770af24d7b41a2c0478da23d86d, type: 3}
+    npcSpriteThinking: {fileID: 21300000, guid: 2817de11762d16840a5577b27302e616, type: 3}
+    npcPortrait: {fileID: 21300000, guid: ffef435ecadc38d409dec9bc06439862, type: 3}
+    npcPortraitAngry: {fileID: 21300000, guid: 84b815fb4a6230a439aa6ce57ad4f100, type: 3}
+    npcPortraitSad: {fileID: 21300000, guid: 367099bf977cd9a4a921e450923360dc, type: 3}
+    npcPortraitHappy: {fileID: 21300000, guid: fd6b29c5e3945e7459b228a74eedc303, type: 3}
+    npcPortraitSurprised: {fileID: 21300000, guid: 525c450d9bbcde248854443aebd423be, type: 3}
+    npcPortraitThinking: {fileID: 21300000, guid: 4e244762e12d4624b8c64e8eb0b5ab49, type: 3}
+  - npcID: 9
+    npcName: "\u6C88\u5A46\u5A46"
+    _inkAssets: {fileID: 4900000, guid: 5711f97944a2a524cb5f29b4227d5000, type: 3}
     npcSprite: {fileID: 21300000, guid: 1a11f3dd8135f894c89f084f48cf6a8c, type: 3}
     npcSpriteAngry: {fileID: 21300000, guid: 9cb548da85ab40a438456eff4edd48c2, type: 3}
     npcSpriteSad: {fileID: 21300000, guid: e9d12424d09476848b978be961002f56, type: 3}

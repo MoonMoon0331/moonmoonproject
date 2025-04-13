@@ -24,7 +24,7 @@ public class NPCDialogue : MonoBehaviour
         inkAssets = npcData._inkAssets;
 
         // Set the NPC sprite and animator controller
-        NPCSprite.GetComponent<Animator>().runtimeAnimatorController = npcData.animatorController;
+        // NPCSprite.GetComponent<Animator>().runtimeAnimatorController = npcData.animatorController;
 
         Button.SetActive(false);
     }
