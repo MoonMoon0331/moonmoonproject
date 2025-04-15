@@ -31,6 +31,7 @@ public class SceneTransitionManager : MonoBehaviour
 
     public void StartSceneTransition(string sceneName)
     {
+        GameManager.Instance.currentSceneName = sceneName;
         StartCoroutine(TransitionRoutine(sceneName));
     }
 

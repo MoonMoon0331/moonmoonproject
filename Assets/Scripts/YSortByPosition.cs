@@ -14,6 +14,7 @@ public class YSortByPosition : MonoBehaviour
 
     void LateUpdate()
     {
+        if(GameManager.Instance.currentSceneName == "Office"){return;}
         sr.sortingOrder = -(int)(transform.position.y * 100) + sortingOffset;
     }
 }

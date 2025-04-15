@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
 
     //現在場景
     private Scene currentScene;
+    [HideInInspector]
+    public string currentSceneName;
 
 
     private void Awake()
@@ -62,6 +64,7 @@ public class GameManager : MonoBehaviour
 
         //取得目前的活動場景
         currentScene = SceneManager.GetActiveScene();
+        currentSceneName = currentScene.name;
         if(currentScene.name == "MainMenu")
         {currentGameState = GameState.MainMenu;}
     }

@@ -1,6 +1,6 @@
 VAR timeLimit = 0.0
 VAR totalTimeLimit = 0.0
-VAR chapterName = "Opening1"
+VAR chooseNodeName = "Opening1"
 VAR itCanChoosing = false
 VAR NPCNode = 0
 
@@ -8,9 +8,9 @@ VAR NPCNode = 0
 //角色表情 (D)Default(H)Happy(S)Sad(A)Angry(T)Thinking(K)Shock
 //#U#0#D#ID#0#D#ID#RED#SHAKE
 //0.更新 
-//1.(左邊玩家ID)
+//1.(左邊玩家ID)(這裡是NPCDATABASE)
 //2.(左邊玩家表情)
-//3.(右邊玩家ID)
+//3.(右邊玩家ID)(這裡是EnemyDATABASE)
 //4.(右邊玩家表情)
 //5.(顯示名字/根據ID/根據玩家名字/none)
 //6.文字顏色(RED紅色)
@@ -30,7 +30,7 @@ VAR storyNode = 0
 你好?#U#999#D#0#D#ID
 ~totalTimeLimit = 12.0
 ~timeLimit = 2
-~chapterName = "Opening2"
+~chooseNodeName = "Opening2"
 +給老子把錢拿來#U#999#A#0#D#Player#RED#K
     ->Intimidation
 
@@ -44,7 +44,7 @@ VAR storyNode = 0
 ===Opening2===
 ~itCanChoosing = true
 你好#U#999#D#0#D#ID
-~chapterName = "CallEnd"
+~chooseNodeName = "CallEnd"
 ~timeLimit = 10.0
 +你好，這裡是警政署連線系統。#U#999#T#0#D#Player#BLACK#N
     ->policeFraud

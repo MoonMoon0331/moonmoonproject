@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyList:
   - enemyID: 0
-    enemyName: "\u8001\u5976\u5976"
+    enemyName: "\u5F35\u6625\u82B1"
     enemyCallNumber: 0900-000-000
     enemyInformation: "\u89AA\u5207\u7684\u8001\u5976\u5976"
-    _inkAssets: {fileID: 4900000, guid: c2157fcde4e2852489f624cc11670ef8, type: 3}
+    _inkAssets: {fileID: 4900000, guid: e9460ef0fc914be42965e7b879eda308, type: 3}
     enemyDifficulty: 0
     enemySprite: {fileID: 21300000, guid: 6b1d193d79db14145bd1a42e2c4eebea, type: 3}
     enemySpriteAngry: {fileID: 21300000, guid: f990e06df05b24f419261241b2d39f90, type: 3}

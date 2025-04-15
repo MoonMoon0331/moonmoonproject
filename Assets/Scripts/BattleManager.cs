@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Ink.Runtime;
 using System.Threading;
 using System;
+using Unity.VisualScripting;
 // using Microsoft.Unity.VisualStudio.Editor;
 
 public class BattleManager : MonoBehaviour
@@ -42,8 +43,8 @@ public class BattleManager : MonoBehaviour
 
      
     [Header("角色資訊")]
-    public Image Player;
-    public Image Enemy;
+    public Image leftCharacter;
+    public Image enemy;
     public TMP_Text nameTmpText;
     public GameObject nameBox;
 
@@ -53,6 +54,8 @@ public class BattleManager : MonoBehaviour
 
     [Header("敵人資料庫")]
     public EnemyDataBase enemyDataBase; //敵人資料庫
+    [Header("NPC資料")]
+    public NPCDataBase npcDataBase; //NPC資料庫
 
     //選擇
     private int currentChoiceIndex = 0;
@@ -61,6 +64,7 @@ public class BattleManager : MonoBehaviour
     private enum BattleState { InProgress, Choosing, Ended }
     private BattleState currentState = BattleState.Ended;
 
+    private bool isHidingChoices = false;
 
 
     private void Awake()
@@ -88,23 +92,22 @@ public class BattleManager : MonoBehaviour
             if(isTotalTimeRunning)
             {
                 totalTimeDuration += Time.deltaTime;
+                if(totalTimeDuration > totalTimeLimit)
+                {
+                    isTotalTimeRunning = false;
+                    StopTimer();
+                    HandleTimeOut();
+                }
                 float remainingTotalTime = totalTimeLimit - totalTimeDuration;
-                float t = Mathf.Clamp01(remainingTotalTime / totalTimeLimit);
+                float t = Mathf.Clamp01(remainingTotalTime / (totalTimeLimit+2f));
                 timerBar.rectTransform.localScale = new Vector3(t, 1, 1); //更新計時器UI
             }
 
             if(timerDuration >= timeLimit)
             {
-                timerBar.rectTransform.localScale = new Vector3(0, 1, 1);
+                if(!isTotalTimeRunning){timerBar.rectTransform.localScale = new Vector3(0, 1, 1);}
                 StopTimer();
                 HandleTimeOut();
-                ContinueBattle();
-                if(story.variablesState["itCanChoosing"] is bool itCanChoosing) //如果可以選擇，繼續戰鬥
-                {
-                    if(itCanChoosing){ContinueBattle();}
-                }
-                else
-                {isTotalTimeRunning = false;}
             }
         }
 
@@ -195,14 +198,16 @@ public class BattleManager : MonoBehaviour
         {
             //重置選項及計時器
             HiddenButtons();
-            timer.SetActive(false);
+            if(!isTotalTimeRunning)
+            {timer.SetActive(false);}
+            
 
             //取得對話內容
             string fullDialogue = story.Continue();
 
             if(story.currentTags.Count > 0)
             {
-                if(story.currentTags[0] == "U")
+                if(story.currentTags[0] == "U" || story.currentTags[0] == "UE")
                 {UpdateBattleDialogueInfo(story.currentTags);}
             }
 
@@ -212,12 +217,13 @@ public class BattleManager : MonoBehaviour
                 StopCoroutine(readingCoroutine);
                 readingCoroutine = null;
             }
-            readingCoroutine = StartCoroutine(ReadingDialogue(fullDialogue));
+            //當我的tag標籤顯示僅需要更新對話表情時，我不更新對話內容
+            if(story.currentTags[0] != "UE")
+            {readingCoroutine = StartCoroutine(ReadingDialogue(fullDialogue));}
+
             isReadingDialogue = true;
 
             currentState = BattleState.InProgress;
-
-            
         }
     }
 
@@ -238,17 +244,28 @@ public class BattleManager : MonoBehaviour
 
     public void StopTimer()
     {
-        timerDuration = 0f;
         isTimerRunning = false;
+        timerDuration = 0f;
     }
 
     private void HandleTimeOut()
     {
         HiddenButtons();
-        
+        StartCoroutine(HandleTimeOutAfterAnimation());
+    }
+
+    private IEnumerator HandleTimeOutAfterAnimation()
+    {
+        yield return new WaitUntil(() => deletionCoroutines.Count == 0);
         currentState = BattleState.InProgress;
-        story.ChoosePathString(story.variablesState["chapterName"].ToString());
-        timer.SetActive(false);
+        story.ChoosePathString(story.variablesState["chooseNodeName"].ToString());
+        ContinueBattle();
+        if(story.variablesState["isInChoosing"] is bool itCanChoosing) //如果可以選擇，繼續戰鬥
+        {
+            if(itCanChoosing){ContinueBattle();}
+        }
+        else
+        {isTotalTimeRunning = false;timer.SetActive(false);isTimerRunning = false;}
     }
 
     private void UpdateChoiceButtons()
@@ -300,6 +317,8 @@ public class BattleManager : MonoBehaviour
 
     private void HandleChoiceSelection()
     {
+        if (!(currentState == BattleState.Choosing || isHidingChoices))
+        return;
         if(InputManager.Instance.GetNavigateDownInput())
         {
             int newIndex = (currentChoiceIndex > 0) ? currentChoiceIndex - 1 : story.currentChoices.Count - 1;
@@ -318,8 +337,16 @@ public class BattleManager : MonoBehaviour
 
     public void MakeChoice(int index)
     {
+        StopAllCoroutines(); // 立即終止所有選項動畫
+        foreach (var btn in buttons)
+        {
+            btn.SetActive(false);
+        }
+
+
         story.ChooseChoiceIndex(index);
         currentState = BattleState.InProgress;
+        isHidingChoices = false;
         isTotalTimeRunning = false;
         StopTimer();
         ContinueBattle();
@@ -346,9 +373,6 @@ public class BattleManager : MonoBehaviour
     {
         isReadingDialogue = true;
         dialogueTmpText.text = "";
-
-        // 如果你希望始終打字機效果，忽略 itCanChoosing 的設定
-        // 或者你可以根據其它條件來決定
         for (int i = 0; i < fullText.Length; i++)
         {
             dialogueTmpText.text += fullText[i];
@@ -364,6 +388,7 @@ public class BattleManager : MonoBehaviour
     }
     public void HiddenButtons()
     {
+        isHidingChoices = true;
         for(int i = 0; i < buttons.Length; i++)
         {
             if(buttons[i].activeSelf)
@@ -379,6 +404,14 @@ public class BattleManager : MonoBehaviour
                 deletionCoroutines[buttons[i]] = c;
             }
         }
+        // 加一個延遲確認的 Coroutine（所有刪除動畫結束後再取消 isHidingChoices）
+        StartCoroutine(WaitForDeleteAnimationDone());
+    }
+
+    private IEnumerator WaitForDeleteAnimationDone()
+    {
+        yield return new WaitUntil(() => deletionCoroutines.Count == 0);
+        isHidingChoices = false;
     }
 
     // 按下確定鍵時，直接顯示完整對話
@@ -392,7 +425,9 @@ public class BattleManager : MonoBehaviour
         dialogueTmpText.text = currentDialogueFullText;
         isReadingDialogue = false;
     }
-
+    
+    // 刪除按鈕文字的 Coroutine
+    // 這裡的 Coroutine 會在按鈕被刪除時自動停止，避免重複執行
     private IEnumerator DeleteButtonTextLetterByLetter(GameObject button)
     {
         TMP_Text btnText = button.GetComponentInChildren<TMP_Text>();
@@ -407,6 +442,7 @@ public class BattleManager : MonoBehaviour
         }
         btnText.text = "";
         button.SetActive(false);
+        deletionCoroutines.Remove(button); // 確保從記錄中移除
     }
 
     private IEnumerator MakeChoiceButton(GameObject button,string text,string _color, System.Action onComplete = null)
@@ -476,14 +512,14 @@ public class BattleManager : MonoBehaviour
         //初始化
         nameBox.SetActive(false);
 
-        int leftEnemyID = Int32.TryParse(tags[1], out leftEnemyID) ? leftEnemyID : 0;
+        int leftNPCID = Int32.TryParse(tags[1], out leftNPCID) ? leftNPCID : 0;
         string leftCurrentEmotion = tags[2];
         int rightEnemyID = Int32.TryParse(tags[3], out rightEnemyID) ? rightEnemyID : 0;
         string rightCurrentEmotion = tags[4];
         string npcName = tags[5];
 
-        UpdatePlayerEmotion(leftEnemyID,leftCurrentEmotion,Player); //更新玩家表情
-        UpdatePlayerEmotion(rightEnemyID,rightCurrentEmotion,Enemy); //更新敵人表情
+        UpdatePlayerEmotion(leftNPCID,leftCurrentEmotion,leftCharacter); //更新玩家表情
+        UpdateEnemyEmotion(rightEnemyID,rightCurrentEmotion,enemy); //更新敵人表情
 
         //更新對話框名字
         if(npcName == "none")
@@ -529,30 +565,58 @@ public class BattleManager : MonoBehaviour
             switch(emotion)
             {
                 case "D":
-                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySprite;
+                    image.sprite = npcDataBase.GetNPCData(npcID).npcSprite;
                     break;
                 case "H":
-                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySpriteHappy;
+                    image.sprite = npcDataBase.GetNPCData(npcID).npcSpriteHappy;
                     break;
                 case "A":
-                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySpriteAngry;
+                    image.sprite = npcDataBase.GetNPCData(npcID).npcSpriteAngry;
                     break;
                 case "S":
-                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySpriteSad;
+                    image.sprite = npcDataBase.GetNPCData(npcID).npcSpriteSad;
                     break;
                 case "T":
-                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySpriteThinking;
+                    image.sprite = npcDataBase.GetNPCData(npcID).npcSpriteThinking;
                     break;
                 case "K":
-                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySpriteSurprised;
+                    image.sprite = npcDataBase.GetNPCData(npcID).npcSpriteSurprised;
                     break;
                 default:
-                    image.sprite = enemyDataBase.GetEnemyData(npcID).enemySprite;
+                    image.sprite = npcDataBase.GetNPCData(npcID).npcSprite;
                     break;
             }
         }
-
-        
+    }
+    private void UpdateEnemyEmotion(int enemyID,string emotion,Image image)
+    {
+        switch(emotion)
+            {
+                case "D":
+                    image.sprite = enemyDataBase.GetEnemyData(enemyID).enemySprite;
+                    break;
+                case "H":
+                    image.sprite = enemyDataBase.GetEnemyData(enemyID).enemySpriteHappy;
+                    break;
+                case "A":
+                    image.sprite = enemyDataBase.GetEnemyData(enemyID).enemySpriteAngry;
+                    break;
+                case "S":
+                    image.sprite = enemyDataBase.GetEnemyData(enemyID).enemySpriteSad;
+                    break;
+                case "T":
+                    image.sprite = enemyDataBase.GetEnemyData(enemyID).enemySpriteThinking;
+                    break;
+                case "K":
+                    image.sprite = enemyDataBase.GetEnemyData(enemyID).enemySpriteSurprised;
+                    break;
+                case "N":
+                    image.sprite = null;
+                    break;
+                default:
+                    image.sprite = enemyDataBase.GetEnemyData(enemyID).enemySprite;
+                    break;
+            }
     }
         
 }
