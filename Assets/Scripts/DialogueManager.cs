@@ -35,8 +35,11 @@ public class DialogueManager : MonoBehaviour
     [Header("NPC資料庫")]
     public NPCDataBase npcDataBase; 
 
-    //對話資訊
-
+    [Header("閱讀速度")]
+    public float readSpeed = 0.02f; //每個字的閱讀速度
+    private bool isReadingDialogue = false;
+    private string currentDialogueFullText = "";
+    private Coroutine readingCoroutine = null;
 
     private void Awake()
     {
@@ -59,7 +62,11 @@ public class DialogueManager : MonoBehaviour
     {
         if (currentState == DialogueState.InProgress && InputManager.Instance.GetSubmitInput())
         {
-            NextDialog();
+            AudioManager.Instance.PlaySFX("Click(Confirm)SFX"); //播放音效
+            if (isReadingDialogue)// 跳過打字
+            {CompleteReading();}
+            else// 進入下一句
+            {NextDialog();}
         }
         else if (currentState == DialogueState.Choosing)
         {
@@ -106,15 +113,16 @@ public class DialogueManager : MonoBehaviour
             StopDialogue();
             return;
         }
-        if (story.currentChoices.Count > 0) //取得目前對話選項數量，如果 > 0 則設定選項按鈕
-        {
-            currentState = DialogueState.Choosing;
-            currentChoiceIndex = 0;
-            UpdateChoices();
-        }
+
         if (story.canContinue) //如果可以繼續下一句對話，執行 story.Continue()
         {
             string nextLine = story.Continue(); //讀取對話內容
+            currentDialogueFullText = nextLine; //將對話內容存入變數
+            
+            //打字機效果
+            if (readingCoroutine != null)
+            {StopCoroutine(readingCoroutine);}
+            readingCoroutine = StartCoroutine(ReadingDialogue(currentDialogueFullText));
 
             // 讀取 Tags
             if(story.currentTags.Count > 0)
@@ -122,13 +130,44 @@ public class DialogueManager : MonoBehaviour
                 if(story.currentTags[0] == "U")
                 {UpdateDialogueInformation(story.currentTags);}
             }
-
-            // 讀取對話內容
-            dialogueTmpText.text = nextLine;
-            currentState = DialogueState.InProgress;
-
-            
         }
+        if (story.currentChoices.Count > 0) //取得目前對話選項數量，如果 > 0 則設定選項按鈕
+        {
+            currentState = DialogueState.Choosing;
+            currentChoiceIndex = 0;
+            UpdateChoices();
+        }
+    }
+    //打字機效果
+    private IEnumerator ReadingDialogue(string fullText)
+    {
+        isReadingDialogue = true;
+        dialogueTmpText.text = "";
+
+        for (int i = 0; i < fullText.Length; i++)
+        {
+            dialogueTmpText.text += fullText[i];
+            yield return new WaitForSeconds(readSpeed);
+
+            if (!isReadingDialogue)
+                break;
+        }
+
+        dialogueTmpText.text = fullText;
+        isReadingDialogue = false;
+        readingCoroutine = null;
+    }
+    ///當按下跳過鍵時，停止打字機效果
+    private void CompleteReading()
+    {
+        if (readingCoroutine != null)
+        {
+            StopCoroutine(readingCoroutine);
+            readingCoroutine = null;
+        }
+
+        dialogueTmpText.text = currentDialogueFullText;
+        isReadingDialogue = false;
     }
 
     private void UpdateChoices()
@@ -169,6 +208,10 @@ public class DialogueManager : MonoBehaviour
 
     private void HandleChoiceSelection()
     {
+        //如果沒有選項，則不執行
+        if (story.currentChoices == null || story.currentChoices.Count == 0)
+        return;
+
         if (InputManager.Instance.GetNavigateDownInput())
         {
             currentChoiceIndex = (currentChoiceIndex > 0) ? currentChoiceIndex - 1 : story.currentChoices.Count - 1;
@@ -189,9 +232,16 @@ public class DialogueManager : MonoBehaviour
 
     public void MakeChoice(int index)
     {
+        if (story.currentChoices == null || index < 0 || index >= story.currentChoices.Count)
+        {
+            Debug.LogWarning("選擇索引超出範圍：" + index);
+            return;
+        }
+
         story.ChooseChoiceIndex(index); //使用 ChooseChoiceIndex 選擇當前選項
         for (int i = 0; i < buttons.Length; i++) //選擇完，將按鈕隱藏
         {buttons[i].gameObject.SetActive(false);}
+        currentState = DialogueState.InProgress; //將狀態改回對話中
         NextDialog();
     }
 

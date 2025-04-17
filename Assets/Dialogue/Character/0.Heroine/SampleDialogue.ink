@@ -19,6 +19,7 @@ VAR NPCNode = 0
 你好啊，今天天氣真的很好。 #U#999#H#Player
 要是可以不用上班就太好了 #U#999#S#Player
 沒事的，我們還是要繼續加油!! #U#0#H#ID
+->Day2
 
 ->END
 

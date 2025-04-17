@@ -19,9 +19,10 @@ public class GameManager : MonoBehaviour
     public float timeHour ;
     
     //遊戲狀態
-    private enum GameState{MainMenu,InGame,PauseMenu}
-    private GameState currentGameState = GameState.InGame;
-    private GameState originalGameState = GameState.InGame;
+    [HideInInspector]
+    public enum GameState{MainMenu,InGame,SettingMenu}
+    public GameState currentGameState = GameState.InGame;
+    public GameState originalGameState = GameState.InGame;
 
     //主角資訊
     public string playerName = "江東升";
@@ -67,13 +68,17 @@ public class GameManager : MonoBehaviour
         currentSceneName = currentScene.name;
         if(currentScene.name == "MainMenu")
         {currentGameState = GameState.MainMenu;}
+
+        //切換背景音樂
+        SwitchBGM(currentSceneName);
+        
     }
 
     public void PauseGame()
     {
         originalGameState = currentGameState;
         //暫停遊戲
-        currentGameState = GameState.PauseMenu;
+        currentGameState = GameState.SettingMenu;
         Time.timeScale = 0;
     }
 
@@ -96,7 +101,21 @@ public class GameManager : MonoBehaviour
                 currentGameState = GameState.InGame;
                 break;
             case "PauseMenu":
-                currentGameState = GameState.PauseMenu;
+                currentGameState = GameState.SettingMenu;
+                break;
+        }
+    }
+
+    public void SwitchBGM(string sceneName)
+    {
+        //切換背景音樂
+        switch (sceneName)
+        {
+            case "Office":
+                AudioManager.Instance.PlayBGM("OfficeBGM");
+                break;
+            default:
+                AudioManager.Instance.PlayBGM("OfficeBGM");
                 break;
         }
     }

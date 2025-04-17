@@ -55,6 +55,8 @@ public class InputManager : MonoBehaviour
         inputActions.Player.Move.canceled += OnMove;
     }
 
+    // 切換到 UI 操作
+    // 這裡的 UI 操作是指選單操作，例如暫停選單、物品欄等
     public void EnableUIInput()
     {
         Debug.Log("Enable UI Input");
@@ -62,19 +64,22 @@ public class InputManager : MonoBehaviour
         inputActions.UI.Enable();
     }
 
+    // 取消所有操作
     public void DisableAllInputs()
     {
         inputActions.Player.Disable();
         inputActions.UI.Disable();
     }
 
+    // 玩家移動輸入
     private void OnMove(InputAction.CallbackContext context)
     {movementInput = context.ReadValue<Vector2>();}
-
     public Vector2 GetMovementInput()
     {return movementInput;}
 
-
+    //暫停按鈕
+    public bool GetPauseInput() => inputActions.Player.Pause.WasPerformedThisFrame();
+    public bool GetPauseInputInUI() => inputActions.UI.Start.WasPerformedThisFrame();
 
     public bool GetInteractInput()
     {

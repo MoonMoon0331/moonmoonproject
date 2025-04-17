@@ -14,15 +14,19 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 1f)] public float sfxVolume = 1f;
 
     [System.Serializable]
-    public class SoundData
+    public class BGMSoundData
     {
         public string name;
         public AudioClip clip;
     }
 
+    [Header("背景音樂資料庫")]
+    public List<BGMSoundData> sounds = new List<BGMSoundData>();
+    private Dictionary<string, AudioClip> bgmMusicDict;
+
     [Header("音效資料庫")]
-    public List<SoundData> sounds = new List<SoundData>();
-    private Dictionary<string, AudioClip> soundDict;
+    public List<BGMSoundData> sfxSounds = new List<BGMSoundData>();
+    private Dictionary<string, AudioClip> sfxSoundDict;
 
     void Awake()
     {
@@ -35,17 +39,23 @@ public class AudioManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        soundDict = new Dictionary<string, AudioClip>();
+        bgmMusicDict = new Dictionary<string, AudioClip>();
         foreach (var s in sounds)
         {
-            if (!soundDict.ContainsKey(s.name))
-                soundDict.Add(s.name, s.clip);
+            if (!bgmMusicDict.ContainsKey(s.name))
+                bgmMusicDict.Add(s.name, s.clip);
+        }
+        sfxSoundDict = new Dictionary<string, AudioClip>();
+        foreach (var s in sfxSounds)
+        {
+            if (!sfxSoundDict.ContainsKey(s.name))
+                sfxSoundDict.Add(s.name, s.clip);
         }
     }
 
     public void PlaySFX(string name)
     {
-        if (soundDict.TryGetValue(name, out AudioClip clip))
+        if (sfxSoundDict.TryGetValue(name, out AudioClip clip))
         {
             sfxSource.PlayOneShot(clip, sfxVolume);
         }
@@ -57,7 +67,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayBGM(string name)
     {
-        if (soundDict.TryGetValue(name, out AudioClip clip))
+        if (bgmMusicDict.TryGetValue(name, out AudioClip clip))
         {
             if (bgmSource.clip == clip) return; // 不重複播放同一首
             bgmSource.clip = clip;
