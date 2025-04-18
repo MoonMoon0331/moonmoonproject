@@ -71,6 +71,7 @@ public class EnemyManager : MonoBehaviour
     // 顯示敵人
     public void ShowEnemy()
     {
+
         // 選擇第一個敵人
         selectedIndex = 0;
         // 清空完成敵人清單

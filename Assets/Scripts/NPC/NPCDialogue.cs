@@ -32,9 +32,7 @@ public class NPCDialogue : MonoBehaviour
     private void Update()
     {
         if(InputManager.Instance.GetInteractInput() && isNearPlayer)
-        {
-            DialogueManager.Instance.StartDialogue(npcData._inkAssets);
-        }
+        {DialogueManager.Instance.StartDialogue(npcData._inkAssets);}
     }
 
     private void OnTriggerEnter2D(Collider2D other)

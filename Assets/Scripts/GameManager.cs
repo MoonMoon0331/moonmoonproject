@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     
     //遊戲狀態
     [HideInInspector]
-    public enum GameState{MainMenu,InGame,SettingMenu}
+    public enum GameState{MainMenu,InGame,SettingMenu,BattleUI}
     public GameState currentGameState = GameState.InGame;
     public GameState originalGameState = GameState.InGame;
 

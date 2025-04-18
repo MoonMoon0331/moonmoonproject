@@ -96,5 +96,6 @@ public class MainMenu : MonoBehaviour
     {
         SceneTransitionManager.Instance.StartSceneTransition("Office");
         GameManager.Instance.SwitchGameState("InGame");
+        InputManager.Instance.EnablePlayerInput();
     }
 }

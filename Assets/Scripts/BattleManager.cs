@@ -74,7 +74,6 @@ public class BattleManager : MonoBehaviour
             Destroy(gameObject); // 如果已有實例，刪除重複的
             return;
         }
-
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }

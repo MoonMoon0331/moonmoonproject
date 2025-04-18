@@ -42,7 +42,7 @@ VAR storyNode = 0
 ===Choose1_1===
 ~totalTimeLimit = 10.0
 ~timeLimit = 2
-~chooseNodeName = "Choose1_2"
+~chooseNodeName = "Choose1_2_1"
 ~isInChoosing = true
 +阿姨，小心，這通是一個詐騙......#U#999#A#0#D#Player#BLACK#D
     ->DialogueTerminated

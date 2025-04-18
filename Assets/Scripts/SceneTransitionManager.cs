@@ -12,11 +12,13 @@ public class SceneTransitionManager : MonoBehaviour
     public Transform tileParent;
     public GameObject tilePrefab;
 
-    [Header("格子設定")]
+    [Header("黑色格子設定")]
     public Vector2 tileSize = new Vector2(100, 100);
     public float tileDelay = 0.02f;
 
     private List<GameObject> tiles = new List<GameObject>();
+
+    
 
     private void Awake()
     {

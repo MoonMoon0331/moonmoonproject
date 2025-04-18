@@ -81,6 +81,17 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void SetBGMVolume(float volume)
+    {
+        bgmVolume = bgmVolume+volume;
+        bgmSource.volume = bgmVolume;
+    }
+    public void SetSFXVolume(float volume)
+    {
+        sfxVolume = sfxVolume+volume;
+        sfxSource.volume = sfxVolume;
+    }
+
     public void StopBGM()
     {
         bgmSource.Stop();
