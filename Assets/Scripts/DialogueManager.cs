@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
 using System;
+using UnityEngine.Playables;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class DialogueManager : MonoBehaviour
     private bool isReadingDialogue = false;
     private string currentDialogueFullText = "";
     private Coroutine readingCoroutine = null;
+    [Header("過場對話")]
+    public PlayableDirector playableDirector; 
 
     private void Awake()
     {
@@ -84,9 +87,8 @@ public class DialogueManager : MonoBehaviour
         currentState = DialogueState.InProgress;
 
         //載入對話數據
-        LoadingDialogueInformation();
+        LoadingDialogueChapter();
         
-
         //更改輸入系統
         InputManager.Instance.EnableUIInput();
         NextDialog();
@@ -105,10 +107,12 @@ public class DialogueManager : MonoBehaviour
     {
         if (story == null) return;
 
-
-
         if (!story.canContinue && story.currentChoices.Count == 0) //如果story不能繼續 && 沒有選項，則代表對話結束
         { 
+            //如果是過場對話
+            if(GameManager.Instance.currentGameState == GameManager.GameState.EyeCatchDialogue) 
+            {stopEyeCatcherDialogue();return;}
+            //如果是一般對話
             story = null;
             StopDialogue();
             return;
@@ -332,7 +336,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     //載入對話背景資訊
-    public void LoadingDialogueInformation()
+    public void LoadingDialogueChapter()
     {
         switch(GameManager.Instance.currentDay)
         {
@@ -361,5 +365,40 @@ public class DialogueManager : MonoBehaviour
                 Debug.LogError("無效的天數！");
                 break;
         }
+    }
+
+    //_______________________________________________//
+    //_________________過場對話______________________//
+    //______________________________________________//
+
+    public void startEyeCatcherDialogue(TextAsset _inkAssets,string chapterName,PlayableDirector _playableDirector)
+    {
+        GameManager.Instance.currentGameState = GameManager.GameState.EyeCatchDialogue; //將遊戲狀態改為過場對話
+        playableDirector = _playableDirector; //取得過場對話的 PlayableDirector
+        playableDirector.Pause(); //暫停時間軸
+
+        dialogueBox.SetActive(true);
+
+        if (story != null) return;
+
+        story = new Story(_inkAssets.text); //new Story 裡面放json檔的文字，讓 Story 初始化
+        currentState = DialogueState.InProgress;
+
+        //載入對話數據
+        story.ChoosePathString(chapterName); //選擇對話路徑
+        
+        //更改輸入系統
+        InputManager.Instance.EnableUIInput();
+        NextDialog();
+    }
+    public void stopEyeCatcherDialogue()
+    {
+        dialogueBox.SetActive(false);
+        currentState = DialogueState.Ended;
+        InputManager.Instance.DisableAllInputs();
+        story = null;
+        GameManager.Instance.currentGameState = GameManager.GameState.InGame; //將遊戲狀態改回遊戲中
+        playableDirector.Resume(); //恢復時間軸
+        playableDirector = null; //清除 PlayableDirector 參考
     }
 }
