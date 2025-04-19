@@ -886,16 +886,14 @@ PlayableDirector:
     value: {fileID: 1428387505}
   - key: {fileID: -3382927938084125201, guid: fdea942edd009124e80a9f36c6a93bc1, type: 2}
     value: {fileID: 3445678155643152956}
-  - key: {fileID: 296205566917926322, guid: fdea942edd009124e80a9f36c6a93bc1, type: 2}
-    value: {fileID: 4423483040400411904}
   - key: {fileID: -2325347909819247403, guid: fdea942edd009124e80a9f36c6a93bc1, type: 2}
     value: {fileID: 4423483040400411904}
-  - key: {fileID: -2419228146490620015, guid: fdea942edd009124e80a9f36c6a93bc1, type: 2}
-    value: {fileID: 4423483040400411904}
-  - key: {fileID: 5106161882903666877, guid: fdea942edd009124e80a9f36c6a93bc1, type: 2}
-    value: {fileID: 7840265731630659413}
   - key: {fileID: -3334911133539547097, guid: fdea942edd009124e80a9f36c6a93bc1, type: 2}
     value: {fileID: 446664311}
+  - key: {fileID: 4497125900348626678, guid: fdea942edd009124e80a9f36c6a93bc1, type: 2}
+    value: {fileID: 4423483040400411904}
+  - key: {fileID: -8613204131512229485, guid: fdea942edd009124e80a9f36c6a93bc1, type: 2}
+    value: {fileID: 7840265731630659413}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &446664310
@@ -1465,7 +1463,6 @@ MonoBehaviour:
   playerPortraitImage: {fileID: 2118630130}
   npcDataBase: {fileID: 11400000, guid: bff23983c284571419626dffcd0a9237, type: 2}
   readSpeed: 0.05
-  playableDirector: {fileID: 0}
 --- !u!4 &584124605
 Transform:
   m_ObjectHideFlags: 0
@@ -6766,7 +6763,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sfxSource: {fileID: 599062540}
   bgmSource: {fileID: 528382538}
-  bgmVolume: 1
+  bgmVolume: 0
   sfxVolume: 1
   sounds:
   - name: OfficeBGM
@@ -7053,7 +7050,7 @@ Transform:
   m_GameObject: {fileID: 7120008302811883269}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0.15, y: 2.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7089,7 +7086,7 @@ Animator:
   m_GameObject: {fileID: 3445678155643152956}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 27707fcb279e1e144bf50b40f99354a6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -7141,7 +7138,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1363303256, guid: 2d1777a6d8a4f304eb04db2c8cc416ab, type: 3}
+  m_Sprite: {fileID: -194352393, guid: 88b386b936801a94783067798f515d52, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -7161,7 +7158,7 @@ Transform:
   m_GameObject: {fileID: 3445678155643152956}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.94, y: 0.12, z: 1}
+  m_LocalPosition: {x: -0.94, y: 0.44, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7195,7 +7192,7 @@ Animator:
   m_GameObject: {fileID: 7120008302811883269}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6aaaddbb5b1fd404c994f17d5d7c6cf5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

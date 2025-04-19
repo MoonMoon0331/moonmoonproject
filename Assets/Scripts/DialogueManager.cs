@@ -41,8 +41,8 @@ public class DialogueManager : MonoBehaviour
     private bool isReadingDialogue = false;
     private string currentDialogueFullText = "";
     private Coroutine readingCoroutine = null;
-    [Header("過場對話")]
-    public PlayableDirector playableDirector; 
+
+    public Action endEyeCatchDialogueAction; //結束對話的事件
 
     private void Awake()
     {
@@ -371,11 +371,9 @@ public class DialogueManager : MonoBehaviour
     //_________________過場對話______________________//
     //______________________________________________//
 
-    public void startEyeCatcherDialogue(TextAsset _inkAssets,string chapterName,PlayableDirector _playableDirector)
+    public void startEyeCatcherDialogue(TextAsset _inkAssets,string chapterName)
     {
         GameManager.Instance.currentGameState = GameManager.GameState.EyeCatchDialogue; //將遊戲狀態改為過場對話
-        playableDirector = _playableDirector; //取得過場對話的 PlayableDirector
-        playableDirector.Pause(); //暫停時間軸
 
         dialogueBox.SetActive(true);
 
@@ -398,7 +396,7 @@ public class DialogueManager : MonoBehaviour
         InputManager.Instance.DisableAllInputs();
         story = null;
         GameManager.Instance.currentGameState = GameManager.GameState.InGame; //將遊戲狀態改回遊戲中
-        playableDirector.Resume(); //恢復時間軸
-        playableDirector = null; //清除 PlayableDirector 參考
+        endEyeCatchDialogueAction?.Invoke(); //執行結束對話的事件
+        endEyeCatchDialogueAction = null; //清空事件
     }
 }
